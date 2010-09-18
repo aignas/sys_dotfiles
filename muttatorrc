@@ -1,0 +1,6 @@
+" muttatorrc for future generations
+
+set layout=vertical
+set guioptions=n
+
+map A :javascript MsgApplyFiltersToSelection() <cr>
