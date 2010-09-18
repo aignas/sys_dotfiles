@@ -48,6 +48,12 @@ dirupdate () {
       gitup)
         continue
         ;;
+      README)
+        continue
+        ;;
+      Rakefile)
+        continue
+        ;;
     esac
 
     update "$file"
