@@ -21,7 +21,7 @@ update () {
   if [ -f "$base_file" ]; then
     if diff "$base_file" "$file" > /dev/null; then
       # File did not change
-      #echo "Skipped $file"
+      echo "$file up to date"
       return
     else
       # Normal files are just copied
@@ -33,7 +33,7 @@ update () {
 
   if [ -d "$base_file" ]; then
     # Dirs are handled recursively
-    #echo "Recursively updating $file..."
+    echo "Recursively updating $file..."
     dirupdate $file/
     return
   fi
