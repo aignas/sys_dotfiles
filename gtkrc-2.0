@@ -1,0 +1,3 @@
+#include this file in configuring
+include "/home/ignas/.gtkrc-2.0.mine"
+
