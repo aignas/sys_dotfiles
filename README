@@ -1,0 +1,9 @@
+This is my dotfiles repository.
+
+The workflow goes like that.
+
+I copy all the files I want to this folder and then have a scrpt (from Adrian C. or anrxc) which basically checks whether the files and folder in the directory are up to date with the ones in the home repository.
+
+To sync repository with computer (not vice versa) I use a rakefile which is quite common around here.
+
+Every computer follows master branch and have local branches for local changes. 
