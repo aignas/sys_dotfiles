@@ -31,7 +31,7 @@ task :install do
   replace_all = false
   Dir['*'].each do |file|
     next if %w[Rakefile README LICENSE].include? file
-    next if FileTest.symlink?(File.join(ENV['HOME'], ".#{file}"))
+#    next if FileTest.symlink?(File.join(ENV['HOME'], ".#{file}"))
 
     # handle .local versions; only copy if DNE
     if file.match('\.local$')
@@ -60,17 +60,17 @@ task :install do
         end
       end
     else
-      link_file(file)
+      copy_file(file)
     end
   end
 end
 
 def replace_file(file)
   system %Q{rm "$HOME/.#{file}"}
-  link_file(file)
+  copy_file(file)
 end
 
-def link_file(file)
-  puts "linking ~/.#{file}"
-  system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
+def copy_file(file)
+  puts "copying ~/.#{file}"
+  system %Q{cp -rfa "$PWD/#{file}" "$HOME/.#{file}"}
 end
