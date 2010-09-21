@@ -1,0 +1,20 @@
+Canto v 0.7.10 (9b313e5)
+Time: Sun Sep 19 16:37:54 2010
+Config parsed successfully.
+Pausing to update...
+Updating git.naquadah.org Git - awesome.git/atom log
+Updating xkcd.com
+Updating Canto RSS
+Updating Phoronix
+Updating Slashdot
+Updating Planet Arch Linux
+Gracefully exiting Canto-fetch.
+Populating feeds...
+Precaching: []
+Curses initialized.
+GUI initialized.
+Signals set.
+Beginning main loop.
+Going to link 5
+Curses done.
+Flushed to disk.
