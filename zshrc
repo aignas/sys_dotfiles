@@ -1,6 +1,14 @@
 # Created by newuser for 4.3.10
-autoload -U compinit promptinit
+
+# completion
+autoload -U compinit 
 compinit
+
+# correction
+setopt correctall
+
+# prompt
+autoload -U promptinit
 promptinit
 
 # {{{ Manual pages
@@ -104,6 +112,7 @@ alias ll='ls --color=auto -Fl'
 alias lld='ls --color=auto -dl *(-/DN)'
 alias lla='ls --color=auto -dl .*'
 alias ..='cd ..'
+alias ...='cd ..'
 alias cdaw='cd ~/.config/awesome'
 alias cdawl='cd /usr/share/awesome/lib'
 
