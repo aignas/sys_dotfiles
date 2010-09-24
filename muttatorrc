@@ -3,4 +3,12 @@
 set layout=vertical
 set guioptions=n
 
-map A :javascript MsgApplyFiltersToSelection() <cr>
+let mapleader = ","
+
+map <leader>a :javascript MsgApplyFiltersToSelection()<cr>
+map <leader>g :set guioptions=
+map <leader>r :restart<cr>
+
+imap q :tabclose<cr>
+
+" vim:   filetype=vim
