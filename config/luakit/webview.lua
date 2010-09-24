@@ -71,7 +71,7 @@ webview.init_funcs = {
     link_hover_display = function (view, w)
         view:add_signal("link-hover", function (v, link)
             if w:is_current(v) and link then
-                w:update_uri(v, nil, link)
+                w.sbar.l.uri.text = "Link: " .. lousy.util.escape(link)
             end
         end)
         view:add_signal("link-unhover", function (v)
@@ -120,7 +120,7 @@ webview.init_funcs = {
     -- Domain properties
     domain_properties = function (view, w)
         view:add_signal("load-status", function (v, status)
-            if status ~= "committed" then return end
+            if status ~= "provisional" then return end
             local domain = (v.uri and string.match(v.uri, "^%a+://([^/]*)/?")) or "about:blank"
             if string.match(domain, "^www.") then domain = string.sub(domain, 5) end
             local props = lousy.util.table.join(domain_props.all or {}, domain_props[domain] or {})
@@ -170,7 +170,15 @@ webview.init_funcs = {
     download_request = function (view, w)
         -- 'link' contains the download link
         -- 'filename' contains the suggested filename (from server or webkit)
-        view:add_signal("download-request", function (v, link, filename) w:download(link, filename) end)
+        view:add_signal("download-request", function (v, link, filename)
+            if not filename then return end
+            -- Make download dir
+            os.execute(string.format("mkdir -p %q", globals.download_dir))
+            local dl = globals.download_dir .. "/" .. filename
+            local wget = string.format("wget -q %q -O %q", link, dl)
+            info("Launching: %s", wget)
+            luakit.spawn(wget)
+        end)
     end,
 
     -- Creates context menu popup from table (and nested tables).
@@ -181,10 +189,10 @@ webview.init_funcs = {
                 true,
                 { "_Toggle Source", function () w:toggle_source() end },
                 { "_Zoom", {
-                    { "Zoom _In",    function () w:zoom_in()  end },
-                    { "Zoom _Out",   function () w:zoom_out() end },
+                    { "Zoom _In",    function () w:zoom_in(globals.zoom_step) end },
+                    { "Zoom _Out",   function () w:zoom_out(globals.zoom_step) end },
                     true,
-                    { "Zoom _Reset", function () w:zoom_set() end }, }, },
+                    { "Zoom _Reset", function () w:zoom_reset() end }, }, },
             }
         end)
     end,
@@ -192,7 +200,7 @@ webview.init_funcs = {
     -- Action to take on resource request.
     resource_request_decision = function (view, w)
         view:add_signal("resource-request-starting", function(v, uri)
-            info("Requesting: %s", uri)
+            if luakit.verbose then print("Requesting: "..uri) end
             -- Return false to cancel the request.
         end)
     end,
@@ -204,8 +212,9 @@ webview.init_funcs = {
 -- as the first argument. All methods must take `view` & `w` as the first two
 -- arguments.
 webview.methods = {
-    reload = function (view) view:reload() end,
-    stop   = function (view) view:stop()   end,
+    reload = function (view, w)
+        view:reload()
+    end,
 
     -- Property functions
     get = function (view, w, k)
@@ -230,6 +239,15 @@ webview.methods = {
         return view:eval_js(script, file)
     end,
 
+    -- close the current tab
+    close_tab = function (view, w)
+        w.tabs:remove(view)
+        view.uri = "about:blank"
+        view:destroy()
+        w:update_tab_count()
+        w:update_tab_labels()
+    end,
+
     -- Toggle source view
     toggle_source = function (view, w, show)
         if show == nil then show = not view:get_view_source() end
@@ -237,28 +255,27 @@ webview.methods = {
     end,
 
     -- Zoom functions
-    zoom_in = function (view, w, step, full_zoom)
-        view:set_prop("full-content-zoom", not not full_zoom)
-        step = step or globals.zoom_step or 0.1
+    zoom_in = function (view, w, step)
         view:set_prop("zoom-level", view:get_prop("zoom-level") + step)
     end,
 
-    zoom_out = function (view, w, step, full_zoom)
-        view:set_prop("full-content-zoom", not not full_zoom)
-        step = step or globals.zoom_step or 0.1
-        view:set_prop("zoom-level", math.max(0.01, view:get_prop("zoom-level") - step))
+    zoom_out = function (view, w, step)
+        local value = view:get_prop("zoom-level") - step
+        view:set_prop("zoom-level", ((value > 0.01) and value) or 0.01)
     end,
 
-    zoom_set = function (view, w, level, full_zoom)
-        view:set_prop("full-content-zoom", not not full_zoom)
-        view:set_prop("zoom-level", level or 1.0)
+    zoom_reset = function (view, w)
+        view:set_prop("zoom-level", 1.0)
     end,
 
     -- Searching functions
     start_search = function (view, w, text)
-        if string.match(text, "^[?/]") then
+        if string.match(text, "^[\?\/]") then
             w:set_mode("search")
-            w:set_input(text)
+            local i = w.ibar.input
+            i.text = text
+            i:focus()
+            i:set_position(-1)
         else
             return error("invalid search term, must start with '?' or '/'")
         end
@@ -328,7 +345,7 @@ webview.methods = {
     end,
 }
 
-function webview.new(w)
+function webview.new(w, uri)
     local view = widget{type = "webview"}
 
     -- Call webview init functions
@@ -336,6 +353,7 @@ function webview.new(w)
         func(view, w)
     end
 
+    if uri then view.uri = uri end
     view.show_scrollbars = false
     return view
 end

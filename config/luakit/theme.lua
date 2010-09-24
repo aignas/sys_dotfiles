@@ -2,20 +2,12 @@
 -- Default luakit theme --
 --------------------------
 
-local theme = {}
+theme = {}
 
 -- Default settings
 theme.font = "monospace normal 9"
 theme.fg   = "#fff"
 theme.bg   = "#000"
-
--- Error colours
-theme.error_fg = "#FFF"
-theme.error_bg = "#F00"
-
--- Notification colours
-theme.notif_fg = "#444"
-theme.notif_bg = "#FFF"
 
 -- Statusbar specific
 theme.sbar_fg           = "#fff"

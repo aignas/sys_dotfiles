@@ -1,8 +1,7 @@
 -- Global variables for luakit
 globals = {
- -- homepage         = "http://luakit.org/",
+    homepage         = "http://luakit.org/",
  -- homepage         = "http://github.com/mason-larobina/luakit",
-    homepage         = "http://archlinux.org/",
     scroll_step      = 20,
     zoom_step        = 0.1,
     max_cmd_history  = 100,
@@ -35,17 +34,10 @@ globals.ssl_strict = false
 search_engines = {
     luakit      = "http://luakit.org/search/index/luakit?q={0}",
     google      = "http://google.com/search?q={0}",
-    duckduckgo  = "http://duckduckgo.com/?q={0}",
-    Wiki        = "http://en.wikipedia.org/wiki/Special:Search?search={0}",
+    wikipedia   = "http://en.wikipedia.org/wiki/Special:Search?search={0}",
     debbugs     = "http://bugs.debian.org/{0}",
     imdb        = "http://imdb.com/find?s=all&q={0}",
     sourceforge = "http://sf.net/search/?words={0}",
-
-    ThinkWiki   = "http://www.thinkwiki.org/wiki/Special:GoogleFind?domains=www.thinkwiki.org&q={0}&sa=Google+Search&sitesearch=www.thinkwiki.org&client=pub-9115710338321120&forid=1&channel=1405984697&ie=ISO-8859-1&oe=ISO-8859-1&sig=myLy8cf2xe40P1pS&cof=GALT%3A%23606060%3BGL%3A1%3BDIV%3A%23336699%3BVLC%3A663399%3BAH%3Acenter%3BBGC%3AFFFFFF%3BLBGC%3A336699%3BALC%3A002bb8%3BLC%3A002bb8%3BT%3A000000%3BGFNT%3A002bb8%3BGIMP%3A002bb8%3BFORID%3A9&hl=en",
-    AUR         = "http://aur.archlinux.org/packages.php?O=0&K={0}&do_Search=Go",
-    ArchWiki    = "http://wiki.archlinux.org/index.php?title=Special%3ASearch&search={0}&go=Go",
-    ArchForums  = "https://bbs.archlinux.org/search.php?action=search&keywords={0}&author=&forum=-1&search_in=all&sort_by=0&sort_dir=DESC&show_as=topics&search=Submit",
-    youtube     = "http://www.youtube.com/results?search_query={0}&aq=f"
 }
 
 -- Fake the cookie policy enum here

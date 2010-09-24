@@ -13,7 +13,6 @@ require "globals"
 -- Load users theme
 -- ("$XDG_CONFIG_HOME/luakit/theme.lua" or "/etc/xdg/luakit/theme.lua")
 lousy.theme.init(lousy.util.find_config("theme.lua"))
-theme = assert(lousy.theme.get(), "failed to load theme")
 
 -- Load users window class
 -- ("$XDG_CONFIG_HOME/luakit/window.lua" or "/etc/xdg/luakit/window.lua")
@@ -31,13 +30,8 @@ require "webview"
 -- ("$XDG_CONFIG_HOME/luakit/binds.lua" or "/etc/xdg/luakit/binds.lua")
 require "binds"
 
--- Init scripts
-require "follow"
+-- Init formfiller lib
 require "formfiller"
-require "go_input"
-require "follow_selected"
-require "go_next_prev"
-require "go_up"
 
 -- Init bookmarks lib
 require "bookmarks"
