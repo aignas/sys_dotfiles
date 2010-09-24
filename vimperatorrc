@@ -1,3 +1,36 @@
 " vimperatorrc for future generations
+" 
+
+set guioptions=""
+
+" Homepage stuff
+set! browser.startup.homepage="http://archlinux.org"
+set! browser.startup.page="3"
+
+" Awesome bar functionality
 ":set wildoptions=auto 
 ":set cpt=l
+
+set defsearch=google
+
+let mapleader = ","
+
+" Search engines configuration
+map <leader>g   :open google 
+map <leader>d   :open duckduckgo 
+map <leader>e   :open ebayuk 
+
+map <leader>aw  :open archwiki 
+map <leader>ap  :open archpkgs 
+map <leader>ab  :open archbugs 
+map <leader>aur :open aur 
+map <leader>bbs :open archforums 
+
+map <leader>tb  :open awesomebugs 
+
+map <leader>w   :open wikipedia 
+map <leader>tw  :open thinkwiki 
+
+map <leader>lm  :open linkomanija 
+
+" vim:   filetype=vim
