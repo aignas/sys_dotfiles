@@ -1,5 +1,5 @@
 # GTK Theme
-include "/home/ignas/.themes/Candido-Zenburn/gtk-2.0/gtkrc"
+include ".themes/Candido-Zenburn/gtk-2.0/gtkrc"
 
 # Icon Theme
 gtk-icon-theme-name = "Tango"
