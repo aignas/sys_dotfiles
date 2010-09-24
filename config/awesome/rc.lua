@@ -10,7 +10,7 @@ require("beautiful")
 require("naughty")
 -- Widgets
 --local wi_bat = require("obvious.smapi")
-require("vicious")
+--require("vicious")
 -- kAwouru's MPD library
 require("lib/mpd") ; mpc = mpd.new({ hostname="localhost" })
 -- keybind library inspired by ierton
@@ -27,7 +27,7 @@ print("---<<<||| rc.lua - Loaded on: "..os.date().."|||>>>---")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/zengns/theme.lua")
+beautiful.init(awful.util.getdir("config").."/themes/gns-ank/theme.lua")
 
 -- Defaul Modifier Keys
 local altkey = "Mod1"
@@ -35,9 +35,13 @@ local modkey = "Mod4"
 local ctrl = "Control"
 local shkey = "Shift"
 
+local mkey1 = "Hyper_L"
+local mkey2 = "Super_L"
+local mkey3 = "Super_R"
+
 -- Some aliases for easier life
 local home   = os.getenv("HOME")
-local cfgdir = home .. "/.config/awesome/"
+local cfgdir = awful.util.getdir("config")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
 
@@ -202,10 +206,6 @@ wibox_bot = {}
 -- Create a systray
 wi_systray = widget({ type = "systray" })
 
-wi_launcher = awful.widget.button({ image = beautiful.awesome_icon })
-wi_launcher:buttons(awful.util.table.join(wi_launcher:buttons(),
-    awful.button({}, 1, nil, function() myrc.menu.show(menu_main,false) end)))
-
 wi_promptbox_top = {}
 wi_promptbox_bot = {}
 
@@ -271,7 +271,7 @@ wi_kbdcfg.current = 1  -- default layout
 --wi_kbdcfg.widget = widget({ type = "textbox", align = "center" })
 wi_kbdcfg.widget = widget({ type = "imagebox" })
 --wi_kbdcfg.widget.text = " " .. wi_kbdcfg.layout[wi_kbdcfg.current][1] .. " "
-wi_kbdcfg.widget.image = image(cfgdir.."icons/flags/24/" .. wi_kbdcfg.layout[wi_kbdcfg.current][1] .. ".png")
+wi_kbdcfg.widget.image = image(cfgdir.."/icons/flags/24/" .. wi_kbdcfg.layout[wi_kbdcfg.current][1] .. ".png")
 --wi_kbdcfg.widget.bg_image = image(cfgdir.."icons/flags/24/" .. wi_kbdcfg.layout[wi_kbdcfg.current][1] .. ".png")
 wi_kbdcfg.naughty = nil
 wi_kbdcfg.dvorlayout = " ` 1 2 3 4 5 6 7 8 9 0 - =\n    / , . p y f g c r l [ ] \n     a o e u i d h t n s ' #\n    \\ ; q j k x b m w v z"
@@ -309,13 +309,13 @@ function wi_kbdcfg.tog (a,b)
         nt = nt .. "\nLayout variant - " .. t[2] 
     else nt = nt .. "\nLayout variant - default" 
     end
-    wi_kbdcfg.widget.image = image(cfgdir.."icons/flags/24/" .. t[1] .. ".png")
+    wi_kbdcfg.widget.image = image(cfgdir.."/icons/flags/24/" .. t[1] .. ".png")
     --wi_kbdcfg.widget.bg_image = image(cfgdir.."icons/flags/24/" .. t[1] .. ".png")
     wi_kbdcfg.widget.text = " " .. t[1] .. " "
     wi_kbdcfg.naughty = naughty.notify({    
         title = "XKBmap", 
         text = nt,
-        icon = image(cfgdir.."icons/flags/48/" .. t[1] .. ".png"),
+        icon = image(cfgdir.."/icons/flags/48/" .. t[1] .. ".png"),
         icon_size = "40",
         timeout = 1
     })
@@ -725,7 +725,7 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons } },
     { rule_any = { 
-      instance = { "MPlayer", "Wicd", "Nitrogen", "gimp", "pinentry" }, 
+      instance = { "mplayer", "wicd", "nitrogen", "gimp", "pinentry" }, 
       name = { "Event Tester" } },
       properties = { floating = true } },
     { rule = { name = "Workrave" },
