@@ -270,7 +270,8 @@ map <down> <leader>bd
 map <right> :bn<cr>
 map <left> :bp<cr>
 "Tab configuration
-map <leader>tn :tabnew %<cr>
+map <leader>tn :tabnew 
+map <leader>td :tabclose<cr>
 map <leader>te :tabedit
 try
   set switchbuf=usetab
