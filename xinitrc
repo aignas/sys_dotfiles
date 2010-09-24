@@ -4,12 +4,11 @@
 # 
 # Executed by startx (run your window manager from here) 
 # Keyboard
-setxkbmap gb -model thinkpad -option caps:super 
+setxkbmap gb -model thinkpadz60 #-option caps:hyper
 xmodmap ~/.Xmodmap 
 # make use of v4l2 stuff 
-export LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so 
+#export LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so 
 # Touchpad off 
-synclient TouchpadOff=1 
 
 # Trackpoint settings 
 # Enable scrolling 
@@ -38,4 +37,6 @@ awesome)
 esac
 
 # this ensures that everything goes to a file .xsession-errors
-exec $SESSION > ~/.xsession-errors 2>&1
+xbindkeys &
+exec ${SESSION} > ~/.xsession-errors 2>&1
+
