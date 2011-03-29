@@ -115,9 +115,12 @@ elseif MySys() == "mac"
   set termencoding=macroman
 endif
 
+" remove toolbar and menubar
+set go=aegt
+
 if has("gui_running")
   colorscheme zenburn
-" 256 colors only if you can handle it
+" 256 colors only if terminal supports it
 elseif $TERM =~ "256color" || $COLORTERM
   set t_Co=256
   colorscheme zenburn
@@ -132,8 +135,14 @@ map <leader>cc2 :colorscheme darkblue<cr>
 map <leader>1 :set syntax=lua<cr>
 map <leader>2 :set syntax=python<cr>
 map <leader>3 :set syntax=latex<cr>
-map <leader>4 :set ft=javascript<cr>
+map <leader>4 :set syntax=fortran<cr>
+map <leader>5 :set syntax=c++<cr>
+map <leader>6 :set syntax=ml<cr>
+map <leader>7 :set syntax=java<cr>
+map <leader>8 :set ft=javascript<cr>
 map <leader>$ :syntax sync fromstart<cr>
+
+map <F4> :!echo -e "File Statistics\nLine number: `wc -l %`\nWord count: `wc -w %`\nSymbol count: `wc -m %`"<cr>
 
 autocmd BufEnter * :syntax sync fromstart
 
@@ -159,6 +168,10 @@ nmap <leader>fu :se ff=unix<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM userinterface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"Blinking not allowed in nvc modes
+let &guicursor = substitute(&guicursor, 'n-v-c:', '&blinkon0-', '')
+
 "Set 7 lines to the curors - when moving vertical..
 set so=7
 
@@ -202,7 +215,7 @@ set t_vb=
 set showmatch
 
 "How many tenths of a second to blink
-set mat=2
+set mat=1
 
 "Highlight search things
 set hlsearch
@@ -265,11 +278,13 @@ map <C-l> <C-W>l
 "Actually, the tab does not switch buffers, but my arrows
 "Bclose function can be found in "Buffer related" section
 map <leader>bd :Bclose<cr>
-map <down> <leader>bd
+"map <down> :bd<cr>
 "Use the arrows to something usefull
 map <right> :bn<cr>
 map <left> :bp<cr>
 "Tab configuration
+map <XF86Forward> gt
+map <XF86Back> gT
 map <leader>tn :tabnew 
 map <leader>td :tabclose<cr>
 map <leader>te :tabedit
@@ -565,7 +580,7 @@ map <leader>s? z=
    """"""""""""""""""""""""""""""
    set grepprg=grep\ -nH\ $*
    let g:Tex_DefaultTargetFormat="pdf"
-   let g:Tex_ViewRule_pdf='evince'
+   let g:Tex_ViewRule_pdf='zathura >/dev/null'
 
    "Bindings
    autocmd FileType tex map <silent><leader><space> :w!<cr> :silent! call Tex_RunLaTeX()<cr>
@@ -615,21 +630,18 @@ map <leader>s? z=
    set iskeyword+=:
 
    let g:Tex_GotoError='0'
-   let g:Tex_CompileRule_dvi='latex -shell-escape -interaction=nonstopmode $*'
-   let g:Tex_CompileRule_ps='ps2pdf -shell-escape $*'
-   let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
-   let g:Tex_ViewRule_ps='evince'
-"   let g:Tex_ViewRule_pdf='evince'
-"   let g:Tex_ViewRule_pdf='apvlv'
-   let g:Tex_ViewRule_pdf='zathura'
-   let g:DefaultTargetFormat='pdf'
+   "let g:Tex_CompileRule_dvi='latex -shell-escape -interaction=nonstopmode $*'
+   "let g:Tex_CompileRule_ps='ps2pdf -shell-escape $*'
+   "let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
    let g:Tex_AutoFolding='1'
+   let g:Tex_MultipleCompileFormats='ps,pdf'
+   "let g:Tex_FormatDependency_pdf = 'ps,pdf'
 
    "Customizing what to fold
    " Default list
    let g:Tex_FoldedSections='part,chapter,section,%%fakesection,subsection,subsubsection,paragraph' 
    " Added sideways in order to fold all the sideways stuff
-   let g:Tex_FoldedEnvironments='verbatim,comment,eq,gather,align,figure,table,sideways,wrap,thebibliography,keywords,abstract,titlepage'
+   let g:Tex_FoldedEnvironments='frame,verbatim,comment,eq,gather,align,figure,table,sideways,wrap,thebibliography,keywords,abstract,titlepage'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype generic
@@ -676,7 +688,7 @@ map <leader>s? z=
    """"""""""""""""""""""""""""""
    "Run the current buffer in python - ie. on leader+space
    "au FileType python so ~/vim_local/syntax/python.vim
-   autocmd FileType python map <buffer> <leader><space> :w!<cr>:!python %<cr>
+   autocmd FileType python map <buffer> <leader>ll :w!<cr>:!./%<cr>
    "autocmd FileType python so ~/vim_local/plugin/python_fold.vim
 
    "Set some bindings up for 'compile' of python

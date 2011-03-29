@@ -23,23 +23,79 @@ module('dyntag')
 --
 
 --- Tag table wich is defined in rc.lua
--- it is smth like this:
--- tags = { { name, othername } }
--- it could work like this (with a key binding you can create one more tag with
--- a name "name2" or "name3" or etc. the tag is added to the end of the inner
--- index and the tags in the inner index can be switched by a keybinding to go
--- to that inner index.
--- taglist shows only the current tag 
-tag_index = {
-    { "term" },
-    { "calc" },
-    { "tex" },
-    { "web" },
-    { "mail" },
-    { "im", "irc" },
-    { "ardour", "jack", "other" },
-    { "mpd" },
-    { "vm", "wine" }
+-- Activities and individual tags should be defined:
+-- Productivity:
+--  TeX1
+--  TeX2
+--  vm
+--  calc
+--  term
+--
+-- System admin:
+--  term
+--  fileman
+--
+-- Media:
+--  gimp
+--  inkscape
+--  ardour1
+--  ardour2
+--  jack,misc
+--  mpd
+--
+-- Web and communicate:
+--  www
+--  mail
+--  im
+--  skype
+--  irc
+--
+-- The idea behind this, is that there are different activities, in which 
+-- mod + num keys mean different things. e.g. in System admin, these 
+-- usually are just new terminal tags, or filemanaging tags, whereas in 
+-- Web and communicate it is either a new browser, torrent app, skype, 
+-- pidgin or any kind of that thing.
+--
+-- TODO
+--  get shifty rewritten.
+--      Employ shifty for dynamic tagging inside the activity and moving activity
+--          stuff?
+--      think of good functions for replacing shifty rules
+--
+--  add sort of functions to incorporate the idea of activities.
+--  Tags have different groups they are assigned to, which can be changed.
+--  Think of a good way to get groups accessed from multiple screen at the same
+--  time. The same groupd can be accessed on the same screen, it is just the
+--  same tag can not. In this way, there should be a mechanism which would
+--  change the screen of the tag depending on where it was accessed. 
+--
+--  New taglist widget?
+--      Show only tags from the current activity
+--      Show activity name
+--  
+--
+activity_index = {
+    prod = {
+        -- productivity
+        { "term" },
+        { "calc" },
+        { "tex" },
+        { "vm", "wine" }
+    },
+    media = {
+        -- media
+        { "ardour", "jack", "other" },
+        { "mpd" },
+        { "graphix" },
+    },
+    web = {
+        -- web and communicate
+        { "web" },
+        { "mail" },
+        { "skype"},
+        { "im"},
+        { "irc" },
+    },
 }
 
 filter = {}
@@ -147,4 +203,4 @@ function filter.minimal(t, args)
     return false
 end
 
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=4:softtabstop=4:encoding=utf-8:textwidth=80
+-- vim: filetype=lua:shiftwidth=4:tabstop=4:softtabstop=4:textwidth=80

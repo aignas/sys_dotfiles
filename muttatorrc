@@ -1,14 +1,29 @@
 " muttatorrc for future generations
 
-set layout=vertical
-set guioptions=n
+:set layout=classic
+:set go=brfF
 
 let mapleader = ","
 
-map <leader>a :javascript MsgApplyFiltersToSelection()<cr>
+map / :emenu View.Toolbars.Quick Filter Bar<cr>
+
+map <leader>fa :emenu Tools.Run Filters on Folder<cr>
+map <leader>fs :emenu Tools.Run Filters on Message<cr>
+map L :emenu View.Layout.Maximize Message Pane<cr>
+mmap L :emenu View.Layout.Maximize Message Pane<cr>
+map <leader>F :emenu View.Layout.Folder Pane<cr>
+mmap <leader>F :emenu View.Layout.Folder Pane<cr>
+map čl :emenu Tools.Run Filters on Folder<cr>
 map <leader>g :set guioptions=
 map <leader>r :restart<cr>
 
-imap q :tabclose<cr>
+map <leader>ig :goto Gmail: Gmail/Inbox<cr>
+map <leader>ih :goto Hermes: Hermes/Inbox<cr>
+map čig :goto Gmail: Gmail/Inbox<cr>
+map čih :goto Hermes: Hermes/Inbox<cr>
+
+mmap d :tabclose<cr>
+
+map q :tabclose<cr>
 
 " vim:   filetype=vim

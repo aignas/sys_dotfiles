@@ -1,7 +1,16 @@
 " vimperatorrc for future generations
 " 
 
-set guioptions=""
+" No toolbar and scrollbars by default
+set go="bnr"
+
+" C-i launches editor in textboxes. Launch the following
+set editor=gvim
+
+set incsearch
+set hlsearch
+set smartcase
+set newtab=all
 
 " Homepage stuff
 set! browser.startup.homepage="http://archlinux.org"
@@ -11,26 +20,44 @@ set! browser.startup.page="3"
 ":set wildoptions=auto 
 ":set cpt=l
 
-set defsearch=google
+let g:hintchars="hjkl"
+let g:hintsio="IO"
+let g:hintlabeling="a"
+
+set ds=google
 
 let mapleader = ","
 
 " Search engines configuration
 map <leader>g   :open google 
-map <leader>d   :open duckduckgo 
+map <leader>G   :tabopen google 
 map <leader>e   :open ebayuk 
+map <leader>E   :tabopen ebayuk 
+map <leader>d   :open duckduckgo 
+map <leader>D   :tabopen duckduckgo 
+map <leader>y   :open youtube 
+map <leader>Y   :tabopen youtube 
 
 map <leader>aw  :open archwiki 
+map <leader>Aw  :tabopen archwiki 
 map <leader>ap  :open archpkgs 
+map <leader>Ap  :tabopen archpkgs 
 map <leader>ab  :open archbugs 
+map <leader>Ab  :tabopen archbugs 
 map <leader>aur :open aur 
+map <leader>Aur :tabopen aur 
 map <leader>bbs :open archforums 
+map <leader>Bbs :tabopen archforums 
 
 map <leader>tb  :open awesomebugs 
+map <leader>Tb  :tabopen awesomebugs 
 
 map <leader>w   :open wikipedia 
+map <leader>W   :tabopen wikipedia 
 map <leader>tw  :open thinkwiki 
+map <leader>Tw  :tabopen thinkwiki 
 
 map <leader>lm  :open linkomanija 
+map <leader>Lm  :tabopen linkomanija 
 
 " vim:   filetype=vim

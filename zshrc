@@ -5,7 +5,7 @@ autoload -U compinit
 compinit
 
 # correction
-setopt correctall
+#setopt correctall
 
 # prompt
 autoload -U promptinit
@@ -45,6 +45,20 @@ function extract () {
   else
     echo 'Error: "$1" is not a valid file for extraction'
   fi
+}
+
+function dae () {
+  if [ "x$1"!="x" -a "$1"!="start" -a "$1"!="restart" \
+    -a "$1"!="stop" -a "x$2"!="x" ]; then
+      sudo /etc/rc.d/${1} ${2}
+  else
+    echo 'Error: Parameters are invalid.'
+  fi
+}
+
+function ranger() {
+  command ranger --fail-unless-cd $@ &&
+    cd "$(grep \^\' ~/.config/ranger/bookmarks | cut -b3-)"
 }
 
 # truncated directory
@@ -111,32 +125,34 @@ alias lsa='ls --color=auto -d .*'
 alias ll='ls --color=auto -Fl'
 alias lld='ls --color=auto -dl *(-/DN)'
 alias lla='ls --color=auto -dl .*'
+
 alias ..='cd ..'
-alias ...='cd ..'
+
 alias cdaw='cd ~/.config/awesome'
 alias cdawl='cd /usr/share/awesome/lib'
 
 alias s='sudo -E'
 alias ss='sudo -Es'
 alias v='vim'
-alias sv='sudo -E vim'
 alias gv='gvim'
-alias sgv='sudo -E gvim'
+alias sv='sudo -E vim'
 
 alias r='ranger'
-
-alias awXeph='Xephyr -ac -br -noreset -screen 1024x768 :1 & ; DISPLAY=:1.0 awesome'
-alias awX='X :1 &; DISPLAY=:1.0 awesome'
+alias t='urxvt &!'
+alias tt='urxvt &! urxvt &!'
 
 # Package managment aliases
 alias p='pacman'
 alias sp='sudo pacman'
-alias c='clyde'
-alias sc='sudo clyde'
-alias b='bauerbill'
-alias sb='sudo bauerbill'
-alias ba='bauerbill --aur'
-alias sba='sudo bauerbill --aur'
+alias c='cower'
 
 #sufix aliases
 alias -s pdf=zathura
+
+#pulseaudio stuff
+if ! ( ps -A | grep X && ps -A |grep pulseaudio || ps -A | grep pulseaudio ) > /dev/null
+then
+  pulseaudio -D
+fi
+
+xset -b

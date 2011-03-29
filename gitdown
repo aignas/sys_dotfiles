@@ -11,14 +11,9 @@
 
 update () {
   file="$@"
-  base_file=$HOME/.$file
+  base_file=/etc/$file
 
-  # Fallback: no leading dot
-  if [ ! -e "$base_file" ]; then
-    base_file=~/$file
-  fi
-
-  if [ -f "$base_file" ]; then
+  if [ -f "$file" ]; then
     if diff "$base_file" "$file" > /dev/null; then
       # File did not change
       echo "$file up to date"
@@ -26,7 +21,7 @@ update () {
     else
       # Normal files are just copied
       echo "Updating $file" >& 2
-      cp -R "$base_file" "$file"
+      cp -R "$file" "$base_file"
       return
     fi
   fi
@@ -45,9 +40,6 @@ update () {
 dirupdate () {
   for file in ${@}*; do
     case $file in
-      gitdown)
-        continue
-        ;;
       gitup)
         continue
         ;;
