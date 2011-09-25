@@ -1,9 +1,22 @@
-This is my dotfiles repository.
+This is the repository for my dotfiles.
 
-The workflow goes like that.
+I have not used this in a while, but now I understood, that I need it in order
+to get updates and easy backup if I tinker with the settings too much. Please
+note that this repository is not the actual files in my HOME directory, but
+rather copies, which are made with the update.sh script. The script was
+originally taken from Uli Schlachter (psychon), but then heavily modified to
+suit my needs.
 
-I copy all the files I want to this folder and then have a scrpt (from Adrian C. or anrxc) which basically checks whether the files and folder in the directory are up to date with the ones in the home repository.
+The workflow goes as follows:
+    - the repo contains all crucial files
+    - the copies are made with the update script
+    - the files can be restored with the same script, but just issuing the
+        command with a different parameter
+    - if I will have more machines than one or something similar, then I will
+        add branches for all machines and master will have only the common
+        things, whereas the branches will have unique customizations.
 
-To sync repository with computer (not vice versa) I use a rakefile which is quite common around here.
+Thanks to psychon and anrxc, who inspired me and I must admit that their repos
+where a good example for me.
 
-Every computer follows master branch and have local branches for local changes. 
+vim: tw=80:spell:spelllang=en_gb
