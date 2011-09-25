@@ -4,73 +4,83 @@
 urxvt*termName:  rxvt-256color
 urxvt*loginShell:         true
 urxvt*scrollBar:         false
-urxvt*secondaryScroll:    true
 urxvt*saveLines:         65535
 urxvt*cursorBlink:        true
-!urxvt*cursorUnderline:   true
 urxvt*urgentOnBell:       true
 !urxvt*override-redirect:false
 !
 ! Extensions
-!urxvt*perl-lib:        /usr/lib/urxvt/perl/
-!urxvt*perl-ext-common: default,matcher,searchable-scrollback,mark-yank-urls
+urxvt*perl-lib:        /usr/lib/urxvt/perl/
+urxvt*perl-ext-common: default,matcher,searchable-scrollback,mark-yank-urls
+!
 !URL stuff
-urxvt*urlLauncher:     /usr/bin/luakit
+! Yankable:
+URxvt.keysym.M-u:    perl:mark-yank-urls:activate_mark_mode
+URxvt.underlineURLs: true
+urxvt*urlLauncher:     /usr/bin/icecat
 urxvt*matcher.button:  1
 ! Catch ugly URLs
 urxvt*cutchars:        '"'()*<>[]{|}
 !
 ! Appearance
-urxvt.font:             xft:Droid Sans Mono Slashed:pixelsize=12
-urxvt.boldfont:         xft:Droid Sans Mono Slashed:bold:pixelsize=12
-urxvt.iconFile:         /usr/share/icons/MeliaeSVG/apps/48/terminal.svg
+!urxvt.font:             xft:Anonymous\ Pro:pixelsize=14
+!urxvt.boldfont:         xft:Anonymous\ Pro:bold:pixelsize=14
+urxvt.font:             xft:Inconsolata:pixelsize=13
+urxvt.boldfont:         xft:Inconsolata:bold:pixelsize=13
+!urxvt.iconFile:         /usr/share/icons/MeliaeSVG/apps/48/terminal.svg
 !urxvt.iconFile:         /usr/share/pixmaps/rxvt-unicode.png
-!
-! Cursor
+
+! Molokai theme
+urxvt*background: #272822
+urxvt*foreground: #f8f8f2
+!urxvt*cursorColor: #8000BA
+urxvt*color0: #101010
+urxvt*color1: #960050
+urxvt*color2: #66aa11
+urxvt*color3: #c47f2c
+urxvt*color4: #30309b
+urxvt*color5: #7e40a5
+urxvt*color6: #89b6e2
+urxvt*color7: #9999aa
+urxvt*color8: #303030
+urxvt*color9: #ff0090
+urxvt*color10: #80ff00
+urxvt*color11: #ffba68
+urxvt*color12: #5f5fee
+urxvt*color13: #bb88dd
+urxvt*color14: #4eb4fa
+urxvt*color15: #d0d0d0
+
+!! Zenburn color-scheme
+!urxvt*background:  #3f3f3f
+!urxvt*foreground:  #dcdccc
 urxvt*cursorColor: #DCDCCC
-!urxvt*cursorColor: #8faf9f
-!
-! Pseudo Transparency
-!urxvt*shading:    25
-!urxvt*transparent:true
-!
-! Yankable:
-!URxvt.keysym.M-u:    perl:mark-yank-urls:activate_mark_mode
-!URxvt.urlLauncher:   firefox
-!URxvt.underlineURLs: true
-! 
-! Zenburn color-scheme
-!urxvt*depth: 32
-!urxvt*background: rgba:3f3f/3f3f/3f3f/cccc
-!urxvt*foreground: rgba:dcdc/dcdc/cccc/dddd
-urxvt*background:  #3f3f3f
-urxvt*foreground:  #dcdccc
-! black + red
-!urxvt*color0:     #3f3f3f
-urxvt*color0:      #1E2320
-urxvt*color1:      #705050
-! green + yellow
-urxvt*color2:      #60b48a
-urxvt*color3:      #dfaf8f
-! blue + purple
-urxvt*color4:      #506070
-urxvt*color5:      #dc8cc3
-! cyan + white
-urxvt*color6:      #8cd0d3
-urxvt*color7:      #dcdccc
-! bright-black + bright-red
-urxvt*color8:      #709080
-urxvt*color9:      #dca3a3
-! bright-green + bright-yellow
-urxvt*color10:     #c3bf9f
-urxvt*color11:     #f0dfaf
-! bright-blue + bright-purple
-urxvt*color12:     #94bff3
-urxvt*color13:     #ec93d3
-! bright-cyan + bright-white
-urxvt*color14:     #93e0e3
-urxvt*color15:     #ffffff
-!}}}
+!! black + red
+!!urxvt*color0:     #3f3f3f
+!urxvt*color0:      #1E2320
+!urxvt*color1:      #705050
+!! green + yellow
+!urxvt*color2:      #60b48a
+!urxvt*color3:      #dfaf8f
+!! blue + purple
+!urxvt*color4:      #506070
+!urxvt*color5:      #dc8cc3
+!! cyan + white
+!urxvt*color6:      #8cd0d3
+!urxvt*color7:      #dcdccc
+!! bright-black + bright-red
+!urxvt*color8:      #709080
+!urxvt*color9:      #dca3a3
+!! bright-green + bright-yellow
+!urxvt*color10:     #c3bf9f
+!urxvt*color11:     #f0dfaf
+!! bright-blue + bright-purple
+!urxvt*color12:     #94bff3
+!urxvt*color13:     #ec93d3
+!! bright-cyan + bright-white
+!urxvt*color14:     #93e0e3
+!urxvt*color15:     #ffffff
+!!}}}
     
 !{{{ XTERM
 xterm*internalBorder:        0
@@ -84,8 +94,8 @@ xterm*highlightSelection: true
 ! Appearance
 xterm*utf8:          2
 xterm*eightBitInput: true
-!xterm*font:        -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-2
-!xterm*boldFont:    -xos4-terminus-bold-*-*-*-12-*-*-*-*-*-iso8859-2
+xterm*font:        -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-2
+xterm*boldFont:    -xos4-terminus-bold-*-*-*-12-*-*-*-*-*-iso8859-2
 xterm.font:             xft:Droid Sans Mono Slashed:pixelsize=14
 xterm.boldfont:         xft:Droid Sans Mono Slashed:bold:pixelsize=14
 xterm*cursorColor: #DCDCCC
