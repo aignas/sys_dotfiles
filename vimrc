@@ -1,8 +1,9 @@
 "mix - http://amix.dk/
 "
-" Maintainer: Amir Salihefendic <amix3k at gmail.com>
-" Version: 2.7
-" Last Change: 12/10/06 00:09:21
+" Inspired by: Amir Salihefendic <amix3k at gmail.com>
+" Maintainer: Ignas Anikevicius
+" Version: 0.4
+" Last Change: 14/05/2011 17:31
 "
 " Sections:
 " ----------------------
@@ -36,16 +37,12 @@
 "    HTML related
 "    Ruby & PHP section
 "    Python section
-"    Cheetah section
 "    Vim section
-"    Java section
-"    JavaScript section
 "    C mappings
-"    SML
+"    mail
 "    Scheme bindings
 " Snippets
 "    Python
-"    javaScript
 " Cope
 " MISC
 "
@@ -70,7 +67,7 @@ function MySys()
   return "linux"
 endfunction
 
-"Sets how many lines of history VIM har to remember
+"Sets how many lines of history VIM has to remember
 set history=600
 
 "Enable filetype plugin
@@ -106,55 +103,46 @@ set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/afte
 "Enable syntax hl
 syntax enable
 
-"Set font to Monaco 10pt
+"Set font to Droid Sans Mono Slashed 12pt
 if MySys() == "linux"
-  set gfn="Droid Sans Mono Slashed\ 12"
-elseif MySys() == "mac"
-  set gfn=Consolas:h14
-  set nomacatsui
-  set termencoding=macroman
+"  set gfn="Anonymous\ Pro\ 14"
+  set gfn="Inconsolata\ 14"
+"  set gfn="Droid\ Sans\ Mono\ Slashed\ 12"
 endif
 
 " remove toolbar and menubar
-set go=aegt
+set go=aeg
+let g:molokai_original = 1
 
 if has("gui_running")
-  colorscheme zenburn
+"  colorscheme zenburn
+  colorscheme molokai
 " 256 colors only if terminal supports it
 elseif $TERM =~ "256color" || $COLORTERM
   set t_Co=256
-  colorscheme zenburn
+"  colorscheme zenburn
+  colorscheme molokai
 else
-  colorscheme darkblue
+  colorscheme default
 endif
-
-map <leader>cc1 :colorscheme zenburn<cr>
-map <leader>cc2 :colorscheme darkblue<cr>
 
 "Some nice mapping to switch syntax (useful if one mixes different languages in one file)
 map <leader>1 :set syntax=lua<cr>
 map <leader>2 :set syntax=python<cr>
-map <leader>3 :set syntax=latex<cr>
-map <leader>4 :set syntax=fortran<cr>
+map <leader>3 :set syntax=tex<cr>
 map <leader>5 :set syntax=c++<cr>
 map <leader>6 :set syntax=ml<cr>
-map <leader>7 :set syntax=java<cr>
-map <leader>8 :set ft=javascript<cr>
-map <leader>$ :syntax sync fromstart<cr>
 
-map <F4> :!echo -e "File Statistics\nLine number: `wc -l %`\nWord count: `wc -w %`\nSymbol count: `wc -m %`"<cr>
+function WebSite()
+  :set syntax=html<cr>
+"  :tabnew ~/repos/LaTeX-project/:
+endfunction
 
-autocmd BufEnter * :syntax sync fromstart
-
-"Highlight current
-set cursorline
-hi cursorline guibg=#333333
-hi CursorColumn guibg=#333333
+map <leader>7 :set syntax=html<cr>
 
 "Omni menu colors
 hi Pmenu guibg=#333333
 hi PmenuSel guibg=#555555 guifg=#ffffff
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fileformats
@@ -234,8 +222,6 @@ endfunction
 "Format the statusline
 set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
-
-
 """"""""""""""""""""""""""""""
 " Visual
 """"""""""""""""""""""""""""""
@@ -278,13 +264,11 @@ map <C-l> <C-W>l
 "Actually, the tab does not switch buffers, but my arrows
 "Bclose function can be found in "Buffer related" section
 map <leader>bd :Bclose<cr>
-"map <down> :bd<cr>
+map <down> :bd<cr>
 "Use the arrows to something usefull
 map <right> :bn<cr>
 map <left> :bp<cr>
 "Tab configuration
-map <XF86Forward> gt
-map <XF86Back> gT
 map <leader>tn :tabnew 
 map <leader>td :tabclose<cr>
 map <leader>te :tabedit
@@ -319,18 +303,10 @@ vnoremap $$ <esc>`>a"<esc>`<i"<esc>
 vnoremap $q <esc>`>a'<esc>`<i'<esc>
 vnoremap $w <esc>`>a"<esc>`<i"<esc>
 
-"Map auto complete of (, ", ', [
-"inoremap $1 ()<esc>:let leavechar=")"<cr>i
-"inoremap $2 []<esc>:let leavechar="]"<cr>i
-"inoremap $4 {<esc>o}<esc>:let leavechar="}"<cr>O
-"inoremap $3 {}<esc>:let leavechar="}"<cr>i
-"inoremap $q ''<esc>:let leavechar="'"<cr>i
-"inoremap $w ""<esc>:let leavechar='"'<cr>i
 au BufNewFile,BufRead *.\(vim\)\@! inoremap " ""<esc>:let leavechar='"'<cr>i
 au BufNewFile,BufRead *.\(txt\)\@! inoremap ' ''<esc>:let leavechar="'"<cr>i
 
 imap <m-l> <esc>:exec "normal f" . leavechar<cr>a
-imap <d-l> <esc>:exec "normal f" . leavechar<cr>a
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -352,13 +328,6 @@ nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
-if MySys() == "mac"
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
-
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -378,13 +347,13 @@ endfunc
 
 func! DeleteTillSlash()
   let g:cmd = getcmdline()
-  if MySys() == "linux" || MySys() == "mac"
+  if MySys() == "linux"
     let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
   else
     let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
   endif
   if g:cmd == g:cmd_edited
-    if MySys() == "linux" || MySys() == "mac"
+    if MySys() == "linux"
       let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
     else
       let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
@@ -399,8 +368,9 @@ endfunc
 
 "Smart mappings on the command line
 cno $h e ~/
-cno $d e ~/Desktop/
+cno $d e ~/desktop/
 cno $j e ./
+cno $l tabnew ~/repos/LaTeX-project/
 
 cno $q <C-\>eDeleteTillSlash()<cr>
 
@@ -521,10 +491,17 @@ map <leader>s? z=
 " Plugin configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
    """"""""""""""""""""""""""""""
-   " Vim Grep
+   " SuperTab
    """"""""""""""""""""""""""""""
-   let Grep_Skip_Dirs = 'RCS CVS SCCS .svn'
-   let Grep_Cygwin_Find = 1
+   "let g:SuperTabMappingTabLiteral <C-Tab>
+
+   """"""""""""""""""""""""""""""
+   " Gist
+   """"""""""""""""""""""""""""""
+   let g:gist_clip_command = 'xclip -selection clipboard'
+   let g:gist_browser_command = 'icecat %URL%'
+   let g:github_user = 'gns_ank'
+   let g:github_token = '44ded42186f9d3713943ae20246edba2'
 
    """"""""""""""""""""""""""""""
    " Yank Ring
@@ -548,7 +525,6 @@ map <leader>s? z=
 
    "Hide the help thing..
    let g:explDetailedHelp=0
-
 
    """"""""""""""""""""""""""""""
    " Minibuffer
@@ -578,42 +554,6 @@ map <leader>s? z=
    """"""""""""""""""""""""""""""
    " LaTeX Suite things
    """"""""""""""""""""""""""""""
-   set grepprg=grep\ -nH\ $*
-   let g:Tex_DefaultTargetFormat="pdf"
-   let g:Tex_ViewRule_pdf='zathura >/dev/null'
-
-   "Bindings
-   autocmd FileType tex map <silent><leader><space> :w!<cr> :silent! call Tex_RunLaTeX()<cr>
-
-   "Auto complete some things ;)
-   autocmd FileType tex inoremap $i \indent
-   autocmd FileType tex inoremap $* \cdot
-   autocmd FileType tex inoremap $i \item
-   autocmd FileType tex inoremap $m \[<cr>\]<++>
-
-   """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-   " for LaTeX files
-   " """""""""""""""""""""""""""""""""""""""""""""""""""""""
-"   au BufEnter *.tex set autowrite "Save before making PDF"
-"   au BufEnter *.tex set updatetime=1000 "Wait 1000 milliseconds (change if you want to)"
-"   au BufEnter *.tex set makeprg=pdflatex\ -halt-on-error\ %\ >/dev/null "make the pdf file, suppress output, don't do anything if there are errors"
-   
-   "make the file after specified time of not moving and after every save"
-"    au CursorHold *.tex call UpdateFile()
-"    au BufWritePost *.tex call UpdateFile()
-   
-    " update function
-"    function! UpdateFile()
-"      silent make
-"        redraw!       "remove artifacts during saves"
-"    endfunction
-   
-    " run evince at runtime"
-    "au BufRead *.tex silent !apvlv %<.pdf>/dev/null &
-   
-   " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-   " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-   " The following changes the default filetype back to 'tex':
    let g:tex_flavor='latex'
 
    " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -621,27 +561,41 @@ map <leader>s? z=
    " program to always generate a file-name.
    set grepprg=grep\ -nH\ $*
 
+   let g:Tex_DefaultTargetFormat="pdf"
+   let g:Tex_ViewRule_pdf='mupdf'
+   "let g:Tex_ViewRule_pdf='zathura'
+
+   "Auto complete some things ;)
+   autocmd FileType tex inoremap $n \indent
+   autocmd FileType tex inoremap $* \cdot
+   autocmd FileType tex inoremap $i \item
+   autocmd FileType tex noremap ,lq /%<cr>
+   autocmd FileType tex noremap ,lcx :let g:TeX_CompileRule_pdf='xelatex-shell-escape $*'<cr>
+   autocmd FileType tex noremap ,lcp :let g:TeX_CompileRule_pdf='pdflatex-shell-escape $*'<cr>
+
    " this is mostly a matter of taste. but LaTeX looks good with just a bit
    " of indentation.
-   set sw=2
+   set sw=4
    " TIP: if you write your \label's as \label{fig:something}, then if you
    " type in \ref{fig: and press <C-n> you will automatically cycle through
    " all the figure labels. Very useful!
    set iskeyword+=:
 
-   let g:Tex_GotoError='0'
-   "let g:Tex_CompileRule_dvi='latex -shell-escape -interaction=nonstopmode $*'
-   "let g:Tex_CompileRule_ps='ps2pdf -shell-escape $*'
-   "let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
+   let g:Tex_GotoError='1'
+   let g:Tex_CompileRule_dvi='latex -shell-escape -interaction=nonstopmode $*'
+   let g:Tex_CompileRule_ps='dvips -Ppdf -o $*.ps $*.dvi'
+   let g:Tex_FormatDependency_ps = 'dvi,ps'
+   let g:Tex_CompileRule_pdf='pdflatex -shell-escape $*'
+
    let g:Tex_AutoFolding='1'
+
    let g:Tex_MultipleCompileFormats='ps,pdf'
-   "let g:Tex_FormatDependency_pdf = 'ps,pdf'
 
    "Customizing what to fold
    " Default list
    let g:Tex_FoldedSections='part,chapter,section,%%fakesection,subsection,subsubsection,paragraph' 
    " Added sideways in order to fold all the sideways stuff
-   let g:Tex_FoldedEnvironments='frame,verbatim,comment,eq,gather,align,figure,table,sideways,wrap,thebibliography,keywords,abstract,titlepage'
+   let g:Tex_FoldedEnvironments='frame,lstlisting,verbatim,comment,eq,gather,align,figure,table,sideways,wrap,thebibliography,keywords,abstract,titlepage'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype generic
@@ -660,11 +614,12 @@ map <leader>s? z=
    " VIM
    """"""""""""""""""""""""""""""
    autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>
-
+   autocmd FileType vim set nofen
 
    """"""""""""""""""""""""""""""
    " HTML related
    """"""""""""""""""""""""""""""
+
    " HTML entities - used by xml edit plugin
    let xml_use_xhtml = 1
    "let xml_no_auto_nesting = 1
@@ -674,6 +629,9 @@ map <leader>s? z=
    let html_number_lines = 0
    let use_xhtml = 1
 
+   au FileType html,cheetah set ft=xml
+   au FileType html,cheetah set syntax=html
+   "au FileType html,cheetah imap <F5> <C-Y>,
 
    """"""""""""""""""""""""""""""
    " Ruby & PHP section
@@ -715,97 +673,17 @@ map <leader>s? z=
    au FileType python vmap <F7> :call Python_Eval_VSplit()<cr>
 
    """"""""""""""""""""""""""""""
-   " Cheetah section
+   " C++ mappings
    """""""""""""""""""""""""""""""
-   autocmd FileType cheetah set ft=xml
-   autocmd FileType cheetah set syntax=cheetah
-
-   """""""""""""""""""""""""""""""
-   " Vim section
-   """""""""""""""""""""""""""""""
-   autocmd FileType vim set nofen
+   autocmd FileType cc map <buffer> <leader><space> :w<cr>:!g++ %<cr>
 
    """""""""""""""""""""""""""""""
-   " Java section
+   " mail
    """""""""""""""""""""""""""""""
-   au FileType java inoremap <buffer> <C-t> System.out.println();<esc>hi
-
-   "Java comments
-   autocmd FileType java source ~/vim_local/macros/jcommenter.vim
-   autocmd FileType java let b:jcommenter_class_author='Amir Salihefendic (amix@amix.dk)'
-   autocmd FileType java let b:jcommenter_file_author='Amir Salihefendic (amix@amix.dk)'
-   autocmd FileType java map <buffer> <F2> :call JCommentWriter()<cr>
-
-   "Abbr'z
-   autocmd FileType java inoremap <buffer> $pr private
-   autocmd FileType java inoremap <buffer> $r return
-   autocmd FileType java inoremap <buffer> $pu public
-   autocmd FileType java inoremap <buffer> $i import
-   autocmd FileType java inoremap <buffer> $b boolean
-   autocmd FileType java inoremap <buffer> $v void
-   autocmd FileType java inoremap <buffer> $s String
-
-   "Folding
-   function! JavaFold()
-     setl foldmethod=syntax
-     setl foldlevelstart=1
-     syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-     syn match foldImports /\(\n\?import.\+;\n\)\+/ transparent fold
-
-     function! FoldText()
-       return substitute(getline(v:foldstart), '{.*', '{...}', '')
-     endfunction
-     setl foldtext=FoldText()
-   endfunction
-   au FileType java call JavaFold()
-   au FileType java setl fen
-
-   au BufEnter *.sablecc,*.scc set ft=sablecc
-
-   """"""""""""""""""""""""""""""
-   " JavaScript section
-   """""""""""""""""""""""""""""""
-   au FileType javascript so ~/vim_local/syntax/javascript.vim
-   function! JavaScriptFold()
-     setl foldmethod=syntax
-     setl foldlevelstart=1
-     syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-     function! FoldText()
-       return substitute(getline(v:foldstart), '{.*', '{...}', '')
-     endfunction
-     setl foldtext=FoldText()
-   endfunction
-   au FileType javascript call JavaScriptFold()
-   au FileType javascript setl fen
-
-   au FileType javascript imap <c-t> console.log();<esc>hi
-   au FileType javascript imap <c-a> alert();<esc>hi
-   au FileType javascript setl nocindent
-   au FileType javascript inoremap <buffer> $r return
-
-   au FileType javascript inoremap <buffer> $d //<cr>//<cr>//<esc>ka<space>
-   au FileType javascript inoremap <buffer> $c /**<cr><space><cr>**/<esc>ka
-
-
-   """"""""""""""""""""""""""""""
-   " HTML
-   """""""""""""""""""""""""""""""
-   au FileType html,cheetah set ft=xml
-   au FileType html,cheetah set syntax=html
-
-
-   """"""""""""""""""""""""""""""
-   " C mappings
-   """""""""""""""""""""""""""""""
-   autocmd FileType c map <buffer> <leader><space> :w<cr>:!gcc %<cr>
-
-
-   """""""""""""""""""""""""""""""
-   " SML
-   """""""""""""""""""""""""""""""
-   autocmd FileType sml map <silent> <buffer> <leader><space> <leader>cd:w<cr>:!sml %<cr>
-
+   au FileType mail set tw=70
+   au FileType mail set spell
+   au FileType mail set spelllang=en_gb
+   au FileType mail set title titlestring=Thunderbird\ Compose\ Message
 
    """"""""""""""""""""""""""""""
    " Scheme bidings
@@ -813,12 +691,6 @@ map <leader>s? z=
    autocmd BufNewFile,BufRead *.scm map <buffer> <leader><space> <leader>cd:w<cr>:!petite %<cr>
    autocmd BufNewFile,BufRead *.scm inoremap <buffer> <C-t> (pretty-print )<esc>i
    autocmd BufNewFile,BufRead *.scm vnoremap <C-t> <esc>`>a)<esc>`<i(pretty-print <esc>
-
-
-   """"""""""""""""""""""""""""""
-   " SVN section
-   """""""""""""""""""""""""""""""
-   map <F8> :new<CR>:read !svn diff<CR>:set syntax=diff buftype=nofile<CR>gg
 
 
 """"""""""""""""""""""""""""""
@@ -837,15 +709,6 @@ map <leader>s? z=
 
 
    """""""""""""""""""""""""""""""
-   " JavaScript
-   """""""""""""""""""""""""""""""
-   autocmd FileType cheetah,html,javascript inorea <buffer> cfun <c-r>=IMAP_PutTextWithMovement("function <++>(<++>) {\n<++>;\nreturn <++>;\n}")<cr>
-   autocmd filetype cheetah,html,javascript inorea <buffer> cfor <c-r>=IMAP_PutTextWithMovement("for(<++>; <++>; <++>) {\n<++>;\n}")<cr>
-   autocmd FileType cheetah,html,javascript inorea <buffer> cif <c-r>=IMAP_PutTextWithMovement("if(<++>) {\n<++>;\n}")<cr>
-   autocmd FileType cheetah,html,javascript inorea <buffer> cifelse <c-r>=IMAP_PutTextWithMovement("if(<++>) {\n<++>;\n}\nelse {\n<++>;\n}")<cr>
-
-
-   """""""""""""""""""""""""""""""
    " HTML
    """""""""""""""""""""""""""""""
    autocmd FileType cheetah,html inorea <buffer> cahref <c-r>=IMAP_PutTextWithMovement('<a href="<++>"><++></a>')<cr>
@@ -855,23 +718,7 @@ map <leader>s? z=
    autocmd FileType cheetah,html inorea <buffer> ctag <c-r>=IMAP_PutTextWithMovement('<<++>><++></<++>>')<cr>
    autocmd FileType cheetah,html inorea <buffer> ctag1 <c-r>=IMAP_PutTextWithMovement("<<++>><cr><++><cr></<++>>")<cr>
 
-
-   """""""""""""""""""""""""""""""
-   " Java
-   """""""""""""""""""""""""""""""
-   autocmd FileType java inorea <buffer> cfun <c-r>=IMAP_PutTextWithMovement("public<++> <++>(<++>) {\n<++>;\nreturn <++>;\n}")<cr>
-   autocmd FileType java inorea <buffer> cfunpr <c-r>=IMAP_PutTextWithMovement("private<++> <++>(<++>) {\n<++>;\nreturn <++>;\n}")<cr>
-   autocmd FileType java inorea <buffer> cfor <c-r>=IMAP_PutTextWithMovement("for(<++>; <++>; <++>) {\n<++>;\n}")<cr>
-   autocmd FileType java inorea <buffer> cif <c-r>=IMAP_PutTextWithMovement("if(<++>) {\n<++>;\n}")<cr>
-   autocmd FileType java inorea <buffer> cifelse <c-r>=IMAP_PutTextWithMovement("if(<++>) {\n<++>;\n}\nelse {\n<++>;\n}")<cr>
-   autocmd FileType java inorea <buffer> cclass <c-r>=IMAP_PutTextWithMovement("class <++> <++> {\n<++>\n}")<cr>
-   autocmd FileType java inorea <buffer> cmain <c-r>=IMAP_PutTextWithMovement("public static void main(String[] argv) {\n<++>\n}")<cr>
-
-
-   "Presse c-q insted of space (or other key) to complete the snippet
-   imap <C-q> <C-]>
-
-
+   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Cope
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -888,17 +735,11 @@ map <c-u> <c-l><c-j>:q<cr>:botright cw 10<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remove the Windows ^M
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
 "Paste toggle - when pasting something in, don't indent.
 set pastetoggle=<F3>
 
 "Remove indenting on empty lines
 map <F2> :%s/\s*$//g<cr>:noh<cr>''
-
-"Super paste
-inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
 
 "A function that inserts links & anchors on a TOhtml export.
 " Notice:
