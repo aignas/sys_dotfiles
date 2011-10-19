@@ -48,7 +48,8 @@ prg = {
     terminal_alt = "xterm",
 --    editor = "urxvt -e vim",
     editor = "gvim",
-    browser = "icecat",
+--    browser = "icecat",
+    browser = "luakit",
     mua = "thunderbird",
     nm = "wicd-client"
 }
@@ -378,11 +379,16 @@ globalkeys = awful.util.table.join(
     awful.key({ "Shift", "Mod1" }, "#46", function () mykbdcfg.tog("j", 3) end),
     awful.key({ "Shift", "Mod1" }, "#30", function () mykbdcfg.tog("j", 4) end),
 
+    awful.key({ }, "XF86AudioRaiseVolume", function () mixer.ctrl("1%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () mixer.ctrl("1%-") end),
+    awful.key({ }, "XF86AudioMute",        function () mixer.ctrl("toggle") end),
+
     awful.key({ modkey, "Shift" }, "#52", function () awful.layout.inc(layouts, -1) end),
     awful.key({ modkey, "Shift" }, "#53", function () awful.layout.inc(layouts,  1) end),
 
     awful.key({ modkey, "Shift" }, "n",   function () awful.client.restore() end),
     awful.key({ modkey, "Shift" }, "i",   function () hfunc.lua_xev() end),
+    awful.key({ modkey, "Shift" }, "m",   function () hfunc.lua_mount() end),
 
     -- Prompt
     awful.key({ modkey },            "r",     
