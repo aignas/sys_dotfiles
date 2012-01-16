@@ -29,9 +29,8 @@
 
 ;Add aliases to your ~/.gitconfig file:
 [alias]
-    st = status
-    ci = commit
     br = branch
+    ci = commit
     co = checkout
     df = diff
     fp = format-patch
@@ -39,14 +38,16 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ls = ls-files
+    st = status
 
 [core]
-    bare = false
     ;excludesfile = /home/ignas/.gitignore
+    ;pager = less -FRSX
+    bare = false
+    editor = gvim -f
     filemode = true
     logallrefupdates = true
     repositoryformatversion = 0
-    ;pager = less -FRSX
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 
 # vim:  shiftwidth=4:tabstop=5:softtabstop=4
