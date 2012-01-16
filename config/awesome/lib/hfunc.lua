@@ -12,6 +12,17 @@ local capi = {
 local ipairs = ipairs
 local print = print
 local type = type
+local os = os
+
+local exec = awful.util.spawn
+local sexec = awful.util.spawn_with_shell
+local function ssexec (args)
+    if type(args)=="string" then
+        sexec(os.getenv("HOME").."/.scripts/"..args)
+        return 0
+    end
+    return 1
+end
 --}}}
 
 module('hfunc')
@@ -72,8 +83,20 @@ end
 -- quit awesome
 local fun = {}
 function awesome_quit ()
-    local quit_not = naughty.notify({title = "Are you sure you want to quit?",
-        text = "Press Y/y to quit or any other key to cancel",
+    local b_halt,b_sleep,b_reboot,b_hib,b_log
+    local quit_not = naughty.notify({title = "What would you like to do?",
+        text = ""
+        .. "1. "
+        .. "(L)og out"
+        .. "\n2. "
+        .. "(H)alt"
+        .. "\n3. "
+        .. "(R)estart"
+        .. "\n4. "
+        .. "(S)uspend to Ram"
+        .. "\n5. "
+        .. "Suspend to (D)isk"
+        .. "",
         timeout = 0 })
     capi.keygrabber.run(
     function(modifiers, key, event)
@@ -84,8 +107,31 @@ function awesome_quit ()
           or key:find("Shift") then
           return true 
         end
-        if key == "y" or key == "Y" then
-          capi.awesome.quit()
+        if key == "1" 
+            or key == "l"
+            or key == "L" then
+            -- logout
+            capi.awesome.quit()
+        elseif key == "2"
+            or key == "h"
+            or key == "H" then
+            -- Halt (aka shutdown)
+            ssexec("dbus-halt")
+        elseif key == "3"
+            or key == "r"
+            or key == "R" then
+            -- Restart the machine
+            ssexec("dbus-reboot")
+        elseif key == "4"
+            or key == "s"
+            or key == "S" then
+            -- Suspend to RAM (aka Sleep)
+            --acpid-sleep
+        elseif key == "5"
+            or key == "d"
+            or key == "D" then
+            -- Suspend to Disk (aka Hibernate)
+            --acpid-2disk
         end
         naughty.destroy(quit_not)
         return false

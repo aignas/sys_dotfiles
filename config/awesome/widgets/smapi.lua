@@ -40,20 +40,27 @@ local dectop =
 
 --{{{ Widget
 
-mywidget = awful.widget.progressbar({
-    width = 25,
-    height = 10,
+mytext = capi.wibox.widget.textbox()
+mytext:set_text(' %%%')
+
+myprog = awful.widget.progressbar({
+    width = 4,
+    height = 10
 })
-mywidget:set_background_color('#3f3f3f')
-mywidget:set_color('#4cdcdc')
-mywidget:set_vertical(false)
-mywidget:set_max_value(100)
-mywidget:set_ticks(true)
-mywidget:set_ticks_gap(1)
-mywidget:set_ticks_size(4)
+myprog:set_background_color('#3f3f3f')
+myprog:set_color('#4cdcdc')
+myprog:set_vertical(true)
+myprog:set_max_value(100)
+--myprog:set_ticks(true)
+--myprog:set_ticks_gap(1)
+--myprog:set_ticks_size(4)
+
+local all_widgets = capi.wibox.layout.fixed.horizontal()
+all_widgets:add(myprog)
+all_widgets:add(mytext)
 
 mywilayout = capi.wibox.layout.margin()
-mywilayout:set_widget(mywidget)
+mywilayout:set_widget(all_widgets)
 mywilayout:set_right(2)
 mywilayout:set_left(2)
 mywilayout:set_top(2)
@@ -69,7 +76,8 @@ timer = capi.timer { timeout = 30 }
 timer:connect_signal("timeout", 
     function() 
         local r = s_read(0,'remaining_percent')
-        mywidget:set_value(r) 
+        mytext:set_text(' '..r..'%') 
+        myprog:set_value(r) 
     end)
 timer:start()
 timer:emit_signal("timeout")

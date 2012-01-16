@@ -125,7 +125,7 @@ mymenu.devel = {
     { "&ipython", prg.terminal .. " -e ipython -pylab" },
     { "&sage", prg.terminal .. " -e sage" },
     { "&mathematica", "mathematica" },
-    { "ms&ketch", home.."downloads/Soft/marvinbeans/bin/./msketch" }
+    { "m&atlab", "matlab -desktop" },
 }
 
 mymenu.media = {
@@ -356,7 +356,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "Tab", awful.tag.history.restore),
     awful.key({ modkey }, "`",
         function ()
-            scratch.drop("urxvt","top","center",1,.4,true)
+            scratch.drop("urxvt","top","center",1,.5,true)
         end),
 
     -- Standard program
