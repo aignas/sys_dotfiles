@@ -1,10 +1,14 @@
-# Created by newuser for 4.3.10
+# My zshrc
+#       by gns-ank
 
 # completion and prompt 
 autoload -U compinit 
 autoload -U promptinit
 promptinit
 compinit
+
+# set environmental variables
+. ${HOME}/.scripts/set-env
 
 # {{{ Manual pages
 #     - colorize, since man-db fails to do so
@@ -48,11 +52,6 @@ function ranger() {
 }
 
 # truncated directory
-#local prmpt_j="%F{red}%B%(1j.[%j] .)%b%f"
-#local prmpt_d="[%B%(!.%F{red}.%F{yellow})%20<...<%d%<<%f%b]"
-#local prmpt_s="%B%(!.%F{red}#%f.%F{purple}$%f%b) "
-#local prmpt_n="%(!.%B%n@%m%b.%F{green}%n@%U%m%u)%f"
-#local prmpt_t="[%F{green}%T%f]"
 local prmpt_j="%F{red}%B%(1j.[%j] .)%b%f"
 local prmpt_d="%B%F{yellow}%30<...<%d%<<%f%b"
 local prmpt_s="%(!.%F{red}.%F{green})%B%(!.#.$%b)%f "
@@ -71,24 +70,6 @@ case "${TERM}" in
     export PROMPT="%D{%H:%M}-%(?..[%?] )%n@%m:%~> "
     ;;
   linux)
-#    echo -en "\e]P01e2320" # zenburn black (normal black)
-#    echo -en "\e]P8709080" # bright-black  (darkgrey)
-#    echo -en "\e]P1705050" # red           (darkred)
-#    echo -en "\e]P9dca3a3" # bright-red    (red)
-#    echo -en "\e]P260b48a" # green         (darkgreen)
-#    echo -en "\e]PAc3bf9f" # bright-green  (green)
-#    echo -en "\e]P3dfaf8f" # yellow        (brown)
-#    echo -en "\e]PBf0dfaf" # bright-yellow (yellow)
-#    echo -en "\e]P4506070" # blue          (darkblue)
-#    echo -en "\e]PC94bff3" # bright-blue   (blue)
-#    echo -en "\e]P5dc8cc3" # purple        (darkmagenta)
-#    echo -en "\e]PDec93d3" # bright-purple (magenta)
-#    echo -en "\e]P68cd0d3" # cyan          (darkcyan)
-#    echo -en "\e]PE93e0e3" # bright-cyan   (cyan)
-#    echo -en "\e]P7dcdccc" # white         (lightgrey)
-#    echo -en "\e]PFffffff" # bright-white  (white)
-#    export PROMPT="%B%(?..[%?] )%b${prmpt_j}${prmpt_d}${prmpt_s}"
-#    export RPROMPT="%(!.%b%F{red}.)${prmpt_n}${prmpt_t}"
     export PROMPT="${prmpt_j}${prmpt_d} on ${prmpt_n}
 ${prmpt_s}%B%(?..[%?] )%b"
     export RPROMPT=""
@@ -108,13 +89,14 @@ esac
 prompt_opts=(cr percent)
 
 # vim mode and key bindings
-export EDITOR=/usr/bin/vim
 bindkey -v
 bindkey '\e[A'  history-beginning-search-backward
 bindkey '\e[B'  history-beginning-search-forward
 bindkey '^?'     backward-delete-char
 bindkey '^[[7~' vi-beginning-of-line
+bindkey '^[[1~' vi-beginning-of-line
 bindkey '^[[8~' vi-end-of-line
+bindkey '^[[4~' vi-end-of-line
 bindkey '^[[3~'          vi-delete-char
 bindkey '^[3;5~'         vi-delete-char
 bindkey '^[.'   insert-last-word
@@ -131,8 +113,14 @@ alias lla='ls --color=auto -dlhX .*'
 
 alias ..='cd ..'
 
+alias cdc='cd ~/.config/'
 alias cdaw='cd ~/.config/awesome'
 alias cdawl='cd /usr/share/awesome/lib'
+
+function mkcd() {
+    mkdir $1
+    cd $1
+}
 
 alias s='sudo -E'
 alias ss='sudo -Es'
@@ -141,8 +129,7 @@ alias gv='gvim'
 alias sv='sudo -E vim'
 
 alias r='ranger'
-alias t='urxvt &!'
-alias tt='urxvt &! urxvt &!'
+alias t='tmux -u'
 
 #sufix aliases
-alias -s pdf=zathura
+alias -s pdf=mupdf

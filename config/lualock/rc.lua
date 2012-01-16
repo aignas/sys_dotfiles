@@ -47,11 +47,11 @@ end)
 -- {{{ 
 background("color", "#1E2320")
 
+im = image("/home/".. os.getenv("USER") .. "/pics/bgs/wallpaper")
+im:show()
 --[[
-im = image("/home/".. os.getenv("USER") .. "/.config/lualock/gentoo.svg")
 im:scale(0.25, 0.25)
 im:set_position(0.01, 0.01)
-im:show()
 --]]
 
 user_text = odious.widget.text{ text = "User: " .. os.getenv("USER"), x = 540,
