@@ -1,0 +1,14 @@
+#! /bin/sh
+
+# Set proper ENV VARS
+export EDITOR=/usr/bin/gvim
+export BROWSER=/usr/bin/luakit
+export SAGE_BROWSER=$BROWSER
+export PDFVIEWER=/usr/bin/mupdf
+export XDG_MAILER=/usr/bin/thunderbird-bin
+export MAILER=$XDG_MAILER
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+
+# Path stuff
+PATH=$PATH:${HOME}/.scripts
+export PATH

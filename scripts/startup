@@ -17,4 +17,4 @@ xset +dpms
 # Start misc stuff
 #startup "xbindkeys"
 #startup "wpa_gui" "-t"
-startup "thunderbird-bin"
+#startup "thunderbird-bin"
