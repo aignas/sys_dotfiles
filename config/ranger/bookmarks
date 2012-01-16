@@ -1,10 +1,4 @@
-a:/home/gns-ank/.config/awesome
-b:/home/gns-ank/books
-d:/home/gns-ank/documents
-':/home/gns-ank/repos/dotfiles
-h:/home/gns-ank
-M:/mnt
-m:/media
-l:/home/gns-ank/repos/LaTeX-project
-r:/home/gns-ank/repos
-D:/home/gns-ank/downloads
+u:/home/gns-ank/docs/lect_Maths/1-Mich-Wingate/lectures
+':/home/gns-ank/downloads/soft
+w:/home/gns-ank/downloads
+d:/home/gns-ank/docs
