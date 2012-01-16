@@ -1,0 +1,50 @@
+% The template
+\documentclass[
+    fontsize=11pt,
+    draft,
+    DIV=calc,
+    BCOR=1mm
+]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{lmodern,scrpage2,lastpage}
+\usepackage{biblatex}
+\bibliography{refs/references}
+
+\usepackage[]{graphicx}
+\usepackage[update,verbose=false]{epstopdf}
+\usepackage{circuitikz}
+
+\renewpagestyle{scrheadings}
+{
+{}{}{}
+}{
+{\hfill\normalfont\pagemark of \pref{LastPage}}
+{\normalfont\pagemark of \pref{LastPage}}{}
+}
+\pagestyle{scrheadings}
+
+\title{<+TITLE+>}
+\author{Ignas Anikevicius}
+\date{<+DATE+>}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\section{Theoretical Background}
+
+<+PROPER STRUCTURE MUST BE PUT+>
+
+\section{Conclusions}
+
+\printbibliography
+
+\appendix
+\section{<+some-title-if-needed+>}
+
+\end{document}
+
+% vim: spell:spelllang=en_gb

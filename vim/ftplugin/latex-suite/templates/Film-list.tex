@@ -1,0 +1,39 @@
+% The template
+\documentclass[
+    fontsize=11pt,
+    DIV=calc,
+    BCOR=1mm
+]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{lmodern,scrpage2,lastpage}
+\usepackage{biblatex}
+\bibliography{refs/references}
+
+\usepackage[]{graphicx}
+\usepackage[update,verbose=false]{epstopdf}
+\usepackage{circuitikz}
+
+\renewpagestyle{scrheadings}
+{
+{\hfill Film list}{Film list}{}
+}{
+{\hfill\normalfont\pagemark of \pref{LastPage}}
+{\normalfont\pagemark of \pref{LastPage}}{}
+}
+
+\title{<+TITLE+>}
+\author{Ignas Anikevicius}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\input{<+year+>/<+title+>}
+
+\end{document}
+
+% vim: spell:spelllang=en_gb
