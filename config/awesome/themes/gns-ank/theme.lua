@@ -30,7 +30,7 @@ theme.bg_minimize = "#444444"
 -- }}}
 
 -- {{{ Borders
-theme.border_width  = 1
+theme.border_width  = 2
 theme.border_normal = "#3F3F3F"
 theme.border_focus  = "#DCDCDC"
 theme.border_marked = "#CC9393"
@@ -85,6 +85,21 @@ theme.taglist_squares_unsel = "/usr/share/awesome/themes/zenburn/taglist/squarez
 -- {{{ Misc
 theme.awesome_icon           = "/usr/share/awesome/themes/zenburn/awesome-icon.png"
 theme.menu_submenu_icon      = "/usr/share/awesome/themes/default/submenu.png"
+-- }}}
+
+-- {{{ Application icons
+theme.icon_theme             = "oxygen"
+theme.icon_theme1            = "/usr/share/icons/oxygen/48x48/"
+theme.icon = {
+    cat_media    = theme.icon_theme1 .. "categories/applications-multimedia.png",
+    cat_devel    = theme.icon_theme1 .. "categories/applications-development.png",
+    cat_net      = theme.icon_theme1 .. "categories/applications-internet.png",
+    terminal     = theme.icon_theme1 .. "apps/utilities-terminal.png",
+    editor       = theme.icon_theme1 .. "apps/accessories-text-editor.png",
+    browser      = theme.icon_theme1 .. "apps/internet-web-browser.png",
+    mail_reader  = theme.icon_theme1 .. "apps/internet-mail.png",
+    file_manager = theme.icon_theme1 .. "apps/system-file-manager.png",
+}
 -- }}}
 
 -- {{{ Layout

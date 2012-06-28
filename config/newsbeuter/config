@@ -1,0 +1,17 @@
+# Maximum number of items per thread
+max-items        100
+show-read-feeds  no
+reload-time     30
+show-read-articles no
+
+# Broweser
+#browser          luakit
+browser          firefox
+
+# Default cache-file directory
+cache-file      "~/.config/newsbeuter/cache.db"
+cookie-cache    "~/.config/newsbeuter/cookies.txt"
+
+# Set notification settings
+notify-program  "~/.scripts/newsbeuter_notify"
+notify-format   "%f %n"

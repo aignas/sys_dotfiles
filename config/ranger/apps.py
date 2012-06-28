@@ -66,21 +66,20 @@ class CustomApplications(Applications):
 		if f.extension is not None:
 			if f.extension in ('pdf', ):
 				c.flags += 'd'
-				return self.either(c, 'mupdf', 'zathura', 'apvlv', 'evince')
+				return self.either(c, 'zathura', 'mupdf')
 			if f.extension in ('xml', ):
 				return self.either(c, 'editor')
 			if f.extension in ('html', 'htm', 'xhtml'):
-				return self.either(c, 'vim', 'icecat', 'firefox', 'opera', 'jumanji',
-						'luakit', 'elinks', 'lynx')
+				return self.either(c, 'vim', 'luakit', 'elinks')
 			if f.extension == 'swf':
-				return self.either(c, 'icecat', 'firefox', 'opera', 'jumanji', 'luakit')
+				return self.either(c, 'luakit')
 			if f.extension == 'nes':
 				return self.either(c, 'fceux')
 			if f.extension in ('swc', 'smc'):
 				return self.either(c, 'zsnes')
 			if f.extension in ('odt', 'ods', 'odp', 'odf', 'odg',
-					'doc', 'xls'):
-				return self.either(c, 'libreoffice', 'soffice', 'ooffice')
+					'doc', 'xls', 'xlsx', 'docx'):
+				return self.either(c, 'libreoffice')
 			if f.extension in ('svg', ):
 				c.flags += 'd'
 				return self.either(c, 'inkscape')
@@ -95,10 +94,10 @@ class CustomApplications(Applications):
 		if f.video or f.audio:
 			if f.video:
 				c.flags += 'd'
-			return self.either(c, 'mplayer', 'smplayer', 'vlc', 'totem')
+			return self.either(c, 'mplayer2')
 
 		if f.image:
-			return self.either(c, 'feh', 'eog', 'mirage')
+			return self.either(c, 'feh')
 
 		if f.document or f.filetype.startswith('text') or f.size == 0:
 			return self.either(c, 'gvim', 'vim', 'editor')
@@ -124,7 +123,7 @@ class CustomApplications(Applications):
 			if exe_name in get_executables():
 				return tuple(parts) + tuple(c)
 
-		return self.either(c, 'gvim', 'vim', 'emacs', 'nano')
+		return self.either(c, 'gvim', 'vim')
 
 	@depends_on('vim')
 	def app_vim(self, c):
@@ -141,22 +140,22 @@ class CustomApplications(Applications):
 			return self.app_self(c)
 		return self.app_vim(c)
 
-	@depends_on('mplayer')
+	@depends_on('mplayer2')
 	def app_mplayer(self, c):
 		if c.mode is 1:
-			return tup('mplayer', '-fs', *c)
+			return tup('mplayer2', '-fs', *c)
 
 		elif c.mode is 2:
-			args = "mplayer -fs -sid 0 -vfm ffmpeg -lavdopts " \
+			args = "mplayer2 -fs -sid 0 -vfm ffmpeg -lavdopts " \
 					"lowres=1:fast:skiploopfilter=all:threads=8".split()
 			args.extend(c)
 			return tup(*args)
 
 		elif c.mode is 3:
-			return tup('mplayer', '-mixer', 'software', *c)
+			return tup('mplayer2', '-mixer', 'software', *c)
 
 		else:
-			return tup('mplayer', *c)
+			return tup('mplayer2', *c)
 
 	@depends_on('feh')
 	def app_feh(self, c):
@@ -229,8 +228,8 @@ CustomApplications.generic('vim', 'fceux', 'elinks', 'wine',
 		'zsnes', 'javac')
 
 # By setting flags='d', this programs will not block ranger's terminal:
-CustomApplications.generic('opera', 'firefox', 'apvlv', 'evince',
-		'zathura', 'mupdf', 'gimp', 'mirage', 'eog', 'lyx', 'mathematica', flags='d')
+CustomApplications.generic('firefox', 'evince',
+		'zathura', 'mupdf', 'gimp', 'mathematica', 'matlab', 'libreoffice', flags='d')
 
 # What filetypes are recognized as scripts for interpreted languages?
 # This regular expression is used in app_default()

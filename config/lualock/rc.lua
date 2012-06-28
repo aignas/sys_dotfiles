@@ -47,9 +47,9 @@ end)
 -- {{{ 
 background("color", "#1E2320")
 
+--[[
 im = image("/home/".. os.getenv("USER") .. "/pics/bgs/wallpaper")
 im:show()
---[[
 im:scale(0.25, 0.25)
 im:set_position(0.01, 0.01)
 --]]

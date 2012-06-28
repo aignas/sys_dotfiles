@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ardour>
+  <MIDI-port tag="MMC in" mode="input"/>
+  <MIDI-port tag="MMC out" mode="output"/>
+  <MIDI-port tag="MTC in" mode="input"/>
+  <MIDI-port tag="MTC out" mode="output"/>
+  <MIDI-port tag="MIDI control in" mode="input"/>
+  <MIDI-port tag="MIDI control out" mode="output"/>
+  <MIDI-port tag="MIDI clock in" mode="input"/>
+  <MIDI-port tag="MIDI clock out" mode="output"/>
+  <Config>
+    <Option name="auto-connect-standard-busses" value="1"/>
+    <Option name="output-auto-connect" value="AutoConnectMaster"/>
+    <Option name="input-auto-connect" value="AutoConnectPhysical"/>
+    <Option name="trace-midi-input" value="0"/>
+    <Option name="trace-midi-output" value="0"/>
+    <Option name="send-mtc" value="0"/>
+    <Option name="send-mmc" value="1"/>
+    <Option name="send-midi-clock" value="0"/>
+    <Option name="mmc-control" value="1"/>
+    <Option name="midi-feedback" value="0"/>
+    <Option name="mmc-receive-device-id" value="127"/>
+    <Option name="mmc-send-device-id" value="0"/>
+    <Option name="initial-program-change" value="-1"/>
+    <Option name="mtc-qf-speed-tolerance" value="5"/>
+    <Option name="diplay-first-midi-bank-as-zero" value="0"/>
+    <Option name="feedback-interval-ms" value="100"/>
+    <Option name="use-tranzport" value="1"/>
+    <Option name="remote-model" value="MixerOrdered"/>
+    <Option name="minimum-disk-io-bytes" value="262144"/>
+    <Option name="midi-readahead" value="1"/>
+    <Option name="capture-buffer-seconds" value="5"/>
+    <Option name="playback-buffer-seconds" value="5"/>
+    <Option name="midi-track-buffer-seconds" value="1"/>
+    <Option name="disk-choice-space-threshold" value="57600000"/>
+    <Option name="auto-analyse-audio" value="0"/>
+    <Option name="osc-port" value="3819"/>
+    <Option name="use-osc" value="0"/>
+    <Option name="edit-mode" value="Slide"/>
+    <Option name="link-region-and-track-selection" value="0"/>
+    <Option name="link-editor-and-mixer-selection" value="0"/>
+    <Option name="keyboard-layout-name" value="ansi"/>
+    <Option name="automation-follows-regions" value="1"/>
+    <Option name="region-boundaries-from-selected-tracks" value="1"/>
+    <Option name="region-boundaries-from-onscreen_tracks" value="1"/>
+    <Option name="autoscroll-editor" value="1"/>
+    <Option name="mute-affects-pre-fader" value="1"/>
+    <Option name="mute-affects-post-fader" value="1"/>
+    <Option name="mute-affects-control-outs" value="1"/>
+    <Option name="mute-affects-main-outs" value="1"/>
+    <Option name="monitoring-model" value="ExternalMonitoring"/>
+    <Option name="listen-position" value="AfterFaderListen"/>
+    <Option name="pfl-position" value="PFLFromAfterProcessors"/>
+    <Option name="afl-position" value="AFLFromAfterProcessors"/>
+    <Option name="use-monitor-bus" value="0"/>
+    <Option name="solo-control-is-listen-control" value="0"/>
+    <Option name="exclusive-solo" value="0"/>
+    <Option name="latched-record-enable" value="0"/>
+    <Option name="all-safe" value="0"/>
+    <Option name="show-solo-mutes" value="1"/>
+    <Option name="solo-mute-override" value="0"/>
+    <Option name="tape-machine-mode" value="0"/>
+    <Option name="solo-mute-gain" value="0"/>
+    <Option name="monitor-bus-preferred-bundle" value=""/>
+    <Option name="quieten-at-speed" value="0"/>
+    <Option name="clicking" value="0"/>
+    <Option name="click-sound" value=""/>
+    <Option name="click-emphasis-sound" value=""/>
+    <Option name="click-gain" value="1"/>
+    <Option name="plugins-stop-with-transport" value="0"/>
+    <Option name="do-not-record-plugins" value="0"/>
+    <Option name="stop-recording-on-xrun" value="0"/>
+    <Option name="create-xrun-marker" value="1"/>
+    <Option name="stop-at-session-end" value="0"/>
+    <Option name="seamless-loop" value="1"/>
+    <Option name="preroll" value="0"/>
+    <Option name="postroll" value="0"/>
+    <Option name="rf-speed" value="2"/>
+    <Option name="shuttle-speed-factor" value="1"/>
+    <Option name="shuttle-speed-threshold" value="5"/>
+    <Option name="shuttle-behaviour" value="Sprung"/>
+    <Option name="shuttle-units" value="Percentage"/>
+    <Option name="primary-clock-delta-edit-cursor" value="0"/>
+    <Option name="secondary-clock-delta-edit-cursor" value="0"/>
+    <Option name="show-track-meters" value="1"/>
+    <Option name="locate-while-waiting-for-sync" value="0"/>
+    <Option name="disable-disarm-during-roll" value="0"/>
+    <Option name="always-play-range" value="0"/>
+    <Option name="meter-hold" value="100"/>
+    <Option name="meter-falloff" value="32"/>
+    <Option name="replicate-missing-region-channels" value="0"/>
+    <Option name="hiding-groups-deactivates-groups" value="1"/>
+    <Option name="verify-remove-last-capture" value="1"/>
+    <Option name="no-new-session-dialog" value="1"/>
+    <Option name="use-windows-vst" value="1"/>
+    <Option name="use-lxvst" value="1"/>
+    <Option name="save-history" value="1"/>
+    <Option name="save-history-depth" value="20"/>
+    <Option name="history-depth" value="20"/>
+    <Option name="use-overlap-equivalency" value="0"/>
+    <Option name="periodic-safety-backups" value="1"/>
+    <Option name="periodic-safety-backup-interval" value="120"/>
+    <Option name="automation-interval" value="50"/>
+    <Option name="sync-all-route-ordering" value="1"/>
+    <Option name="only-copy-imported-files" value="0"/>
+    <Option name="keep-tearoffs" value="0"/>
+    <Option name="new-plugins-active" value="1"/>
+    <Option name="keyboard-layout" value="ansi"/>
+    <Option name="default-bindings" value="ardour"/>
+    <Option name="default-narrow_ms" value="0"/>
+    <Option name="name-new-markers" value="0"/>
+    <Option name="rubberbanding-snaps-to-grid" value="0"/>
+    <Option name="font-scale" value="102400"/>
+    <Option name="default-session-parent-dir" value="/home/gns-ank/composing"/>
+    <Option name="show-waveforms" value="1"/>
+    <Option name="show-waveforms-while-recording" value="1"/>
+    <Option name="waveform-scale" value="Linear"/>
+    <Option name="waveform-shape" value="Traditional"/>
+    <Option name="allow-special-bus-removal" value="0"/>
+    <Option name="processor-usage" value="-1"/>
+    <Option name="color-regions-using-track-color" value="0"/>
+    <Option name="max-gain" value="2"/>
+    <Option name="update-editor-during-summary-drag" value="1"/>
+    <Option name="never-display-periodic-midi" value="1"/>
+    <Option name="sound-midi-notes" value="0"/>
+    <Option name="use-plugin-own-gui" value="1"/>
+    <Option name="max-recent-sessions" value="10"/>
+    <Option name="automation-thinning-factor" value="20"/>
+    <Option name="denormal-protection" value="0"/>
+    <Option name="denormal-model" value="DenormalFTZDAZ"/>
+    <Option name="show-zoom-tools" value="1"/>
+    <Option name="widget-prelight" value="1"/>
+    <Option name="mixer-strip-visibility" value="PhaseInvert,SoloSafe,SoloIsolated,Group,MeterPoint"/>
+    <Option name="allow-non-quarter-pulse" value="0"/>
+    <Option name="show-region-gain" value="0"/>
+  </Config>
+  <Metadata/>
+  <Extra>
+    <Keyboard edit-button="3" edit-modifier="4" delete-button="3" delete-modifier="1" snap-modifier="32" insert-note-button="1" insert-note-modifier="4"/>
+    <TransportControllables roll="0" stop="1" goto-start="2" goto-end="3" auto-loop="4" play-selection="5" rec="6" shuttle="13"/>
+    <UI status-bar="WallClock,Disk,DSP,Buffers,JACK,Format">
+      <Window name="locations" visible="no" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="bigclock" visible="no" x-off="153" y-off="387" x-size="702" y-size="128"/>
+      <Window name="GlobalPortMatrix-audio" visible="no" x-off="0" y-off="18" x-size="627" y-size="660"/>
+      <Window name="GlobalPortMatrix-midi" visible="no" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Tearoffs>
+        <transport tornoff="no"/>
+        <mouse-mode tornoff="no"/>
+      </Tearoffs>
+    </UI>
+  </Extra>
+  <ControlProtocols>
+    <Protocol name="Mackie" active="no"/>
+    <Protocol name="Open Sound Control (OSC)" active="no"/>
+    <Protocol name="Generic MIDI" active="no"/>
+  </ControlProtocols>
+</Ardour>

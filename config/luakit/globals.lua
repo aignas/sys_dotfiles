@@ -19,9 +19,12 @@ globals = {
 local _, arch = luakit.spawn_sync("uname -sm")
 -- Only use the luakit version if in date format (reduces identifiability)
 local lkv = string.match(luakit.version, "^(%d+.%d+.%d+)")
+globals.useragent = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 (KHTML, like Gecko) Chromium/14.0.825.0"
+--[[
 globals.useragent = string.format("Mozilla/5.0 (%s) AppleWebKit/%s+ (KHTML, like Gecko) WebKitGTK+/%s luakit%s",
     string.sub(arch, 1, -2), luakit.webkit_user_agent_version,
     luakit.webkit_version, (lkv and ("/" .. lkv)) or "")
+--]]
 
 -- Search common locations for a ca file which is used for ssl connection validation.
 local ca_files = {
@@ -88,18 +91,18 @@ search_engines.default = search_engines.google
 -- See http://webkitgtk.org/reference/webkitgtk-WebKitWebSettings.html
 domain_props = { --[[
     ["all"] = {
-        enable_scripts          = false,
-        enable_plugins          = false,
-        enable_private_browsing = false,
-        user_stylesheet_uri     = "",
+        ["enable-scripts"]          = false,
+        ["enable-plugins"]          = false,
+        ["enable-private-browsing"] = false,
+        ["user-stylesheet-uri"]     = "",
     },
     ["youtube.com"] = {
-        enable_scripts = true,
-        enable_plugins = true,
+        ["enable-scripts"] = true,
+        ["enable-plugins"] = true,
     },
     ["bbs.archlinux.org"] = {
-        user_stylesheet_uri     = "file://" .. luakit.data_dir .. "/styles/dark.css",
-        enable_private_browsing = true,
+        ["user-stylesheet-uri"]     = "file://" .. luakit.data_dir .. "/styles/dark.css",
+        ["enable-private-browsing"] = true,
     }, ]]
 }
 

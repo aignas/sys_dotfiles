@@ -1,0 +1,65 @@
+function ranger() {
+    command ranger --fail-unless-cd $@ &&
+        cd "$(grep \^\' ~/.config/ranger/bookmarks | cut -b3-)"
+}
+
+# extract files function stolen from Adrian C.
+function extract () {
+  if [[ -f "$1" ]]; then
+    case "$1" in
+      *.tbz2 | *.tar.bz2) tar -xvjf  "$1"     ;;
+      *.txz | *.tar.xz)   tar -xvJf  "$1"     ;;
+      *.tgz | *.tar.gz)   tar -xvzf  "$1"     ;;
+      *.tar | *.cbt)      tar -xvf   "$1"     ;;
+      *.zip | *.cbz)      unzip      "$1"     ;;
+      *.rar | *.cbr)      unrar x    "$1"     ;;
+      *.arj)              unarj x    "$1"     ;;
+      *.ace)              unace x    "$1"     ;;
+      *.bz2)              bunzip2    "$1"     ;;
+      *.xz)               unxz       "$1"     ;;
+      *.gz)               gunzip     "$1"     ;;
+      *.7z)               7z x       "$1"     ;;
+      *.Z)                uncompress "$1"     ;;
+      *.gpg)       gpg2 -d "$1" | tar -xvzf - ;;
+      *) echo 'Error: failed to extract "$1"' ;;
+    esac
+  else
+    echo 'Error: "$1" is not a valid file for extraction'
+  fi
+}
+
+
+# Normal aliases
+alias visudo='sudo -E EDITOR=vim visudo'
+
+alias ls='ls --color=auto -FX'
+alias lsd='ls --color=auto -dX *(-/DN)'
+alias lsa='ls --color=auto -dX .*'
+alias ll='ls --color=auto -FlhX'
+alias lld='ls --color=auto -dlhX *(-/DN)'
+alias lla='ls --color=auto -dlhX .*'
+
+alias ..='cd ..'
+
+alias cdc='cd ~/.config/'
+alias cdaw='cd ~/.config/awesome'
+alias cdawl='cd /usr/share/awesome/lib'
+
+function mkcd() {
+    mkdir $1
+    cd $1
+}
+
+alias s='sudo -E'
+alias ss='sudo -Es'
+alias v='vim'
+alias gv='gvim'
+alias sv='sudo -E vim'
+
+alias dem='dtach -A /tmp/emerge -r none sudo -E emerge'
+
+alias r='ranger'
+alias g='git'
+
+#sufix aliases
+alias -s pdf=mupdf

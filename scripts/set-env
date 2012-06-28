@@ -1,14 +1,22 @@
 #! /bin/sh
 
 # Set proper ENV VARS
-export EDITOR=/usr/bin/gvim
-export BROWSER=/usr/bin/luakit
-export SAGE_BROWSER=$BROWSER
-export PDFVIEWER=/usr/bin/mupdf
-export XDG_MAILER=/usr/bin/thunderbird-bin
-export MAILER=$XDG_MAILER
+export LANG="en_GB.UTF-8"
+
+export EDITOR="gvim"            # default editor
+export PAGER="less"             # default pager
+
+#export BROWSER="luakit"         # default browser
+export BROWSER="firefox"        # default browser
+export SAGE_BROWSER=$BROWSER    # default SAGE browser
+
+export PDFVIEWER="zathura"      # default pdfviewer for texdoc
+
+export XDG_MAILER="thunderbird" # default mailer
+export MAILER=$XDG_MAILER       # just make some stuff work
+
+# Use system fonts in JAVA applications
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
-# Path stuff
-PATH=$PATH:${HOME}/.scripts
-export PATH
+# Add the scripts directory to the path
+export PATH=$PATH:${HOME}/.scripts
