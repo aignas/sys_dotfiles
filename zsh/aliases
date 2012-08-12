@@ -28,6 +28,30 @@ function extract () {
   fi
 }
 
+# Useful function to cd into config directories.
+function cdc ()
+{
+    case ${1} in
+        a)  DIR=awesome     ;;
+        lk) DIR=luakit      ;;
+        ll) DIR=lualock     ;;
+        *)  DIR=${1}        ;;
+    esac
+    cd ~/.config/${DIR}
+    return 0
+}
+
+function cdr ()
+{
+    case ${1} in
+        a)  DIR=awesome         ;;
+        p)  DIR=arch/pkgbuilds  ;;
+        *)  DIR=${1}            ;;
+    esac
+    cd ~/repo/${DIR}
+    return 0
+}
+
 
 # Normal aliases
 alias visudo='sudo -E EDITOR=vim visudo'
@@ -41,10 +65,6 @@ alias lla='ls --color=auto -dlhX .*'
 
 alias ..='cd ..'
 
-alias cdc='cd ~/.config/'
-alias cdaw='cd ~/.config/awesome'
-alias cdawl='cd /usr/share/awesome/lib'
-
 function mkcd() {
     mkdir $1
     cd $1
@@ -56,10 +76,24 @@ alias v='vim'
 alias gv='gvim'
 alias sv='sudo -E vim'
 
-alias dem='dtach -A /tmp/emerge -r none sudo -E emerge'
+alias pacman='pacman-color'
+alias p='pacman'
+alias sp='sudo pacman'
+alias cw='cower'
 
 alias r='ranger'
 alias g='git'
 
 #sufix aliases
-alias -s pdf=mupdf
+alias -s pdf=zathura
+alias -s tex=vim
+alias -s avi=mplayer
+
+# Make tmux work with colours:
+if [ $TERM=='*256color' ]; then
+    alias tm='tmux -2'
+else
+    alias tm='tmux -8'
+fi
+
+# vim: filetype=zsh

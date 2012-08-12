@@ -20,11 +20,11 @@ local exec = awful.util.spawn
 local sexec = awful.util.spawn_with_shell
 --}}}
 
-module('hfunc')
+local hfunc = { }
 
 --- {{{ Function definitions
 -- Client info
-function client_prop(c) 
+function hfunc.client_prop(c) 
     if prop_notif then naughty.destroy(prop_notif) end
     local f = function (prop, str) 
         local _string = ""
@@ -60,7 +60,7 @@ end
 
 --- {{{ Function definitions
 -- Client info
-function client_prop_all(c) 
+function hfunc.client_prop_all(c) 
     if prop_notif then naughty.destroy(prop_notif) end
     local f = function (prop, str) 
         local _string = ""
@@ -87,7 +87,7 @@ function client_prop_all(c)
 end 
 
 -- xev alternative in lua
-function lua_xev()
+function hfunc.lua_xev()
     local notif = naughty.notify({title = "Key Pressed", text = "", timeout=0})
     capi.keygrabber.run(
     function(modifiers, key, event)
@@ -107,7 +107,7 @@ end
 
 -- volume feedback
 local vol_not
-function volume_feed (args)
+function hfunc.volume_feed (args)
     title = args.title or ""
     text = args.text or ""
     naughty.destroy(vol_not)
@@ -117,7 +117,7 @@ function volume_feed (args)
 end
 
 -- mounter
-function lua_mount()
+function hfunc.lua_mount()
     local cliname = ""
     awful.prompt.run({ prompt = "Enter Client Name: " },
     mypromptbox[mouse.screen].widget,
@@ -128,7 +128,7 @@ function lua_mount()
 end
 
 -- Check config in Xephyr
-function awe_Xephyr()
+function hfunc.awe_Xephyr()
     -- Start Xephyr with the right resolution
     sexec('Xephyr -ac -br -noreset -screen 1152x720 :1')
     -- Sleep for 0.2 seconds
@@ -137,5 +137,7 @@ function awe_Xephyr()
     -- Start awesome
     sexec('DISPLAY=:1 awesome -c ~/.config/awesome/rc.lua.new')
 end
+
+return hfunc
 
 ---}}}

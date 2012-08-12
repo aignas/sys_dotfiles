@@ -94,7 +94,7 @@ class CustomApplications(Applications):
 		if f.video or f.audio:
 			if f.video:
 				c.flags += 'd'
-			return self.either(c, 'mplayer2')
+			return self.either(c, 'mplayer')
 
 		if f.image:
 			return self.either(c, 'feh')
@@ -140,22 +140,22 @@ class CustomApplications(Applications):
 			return self.app_self(c)
 		return self.app_vim(c)
 
-	@depends_on('mplayer2')
+	@depends_on('mplayer')
 	def app_mplayer(self, c):
 		if c.mode is 1:
-			return tup('mplayer2', '-fs', *c)
+			return tup('mplayer', '-fs', *c)
 
 		elif c.mode is 2:
-			args = "mplayer2 -fs -sid 0 -vfm ffmpeg -lavdopts " \
+			args = "mplayer -fs -sid 0 -vfm ffmpeg -lavdopts " \
 					"lowres=1:fast:skiploopfilter=all:threads=8".split()
 			args.extend(c)
 			return tup(*args)
 
 		elif c.mode is 3:
-			return tup('mplayer2', '-mixer', 'software', *c)
+			return tup('mplayer', '-mixer', 'software', *c)
 
 		else:
-			return tup('mplayer2', *c)
+			return tup('mplayer', *c)
 
 	@depends_on('feh')
 	def app_feh(self, c):

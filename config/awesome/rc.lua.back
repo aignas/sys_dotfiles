@@ -1,33 +1,24 @@
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=4:softtabstop=4:textwidth=80:foldmethod=marker
 
 -- Standard awesome library
-require("awful")
+local awful = require("awful")
+awful.rules = require("awful.rules")
 require("awful.autofocus")
-require("awful.rules")
 -- Widget and layout library
-require("wibox")
+local wibox = require("wibox")
 -- Theme handling library
-require("beautiful")
+local beautiful = require("beautiful")
 -- Notification library
-require("naughty")
-require("menubar")
+local naughty = require("naughty")
+local menubar = require("menubar")
 
 -- MPD library
-require("lib/mpd") ; mpc = mpd.new({ hostname="localhost" })
+--require("lib/mpd") ; mpc = mpd.new({ hostname="localhost" })
 -- Helper functions
-require("lib/hfunc")
-require("lib/acpid")
-require("lib/osd")
+local hfunc = require("lib/hfunc")
+local acpid = require("lib/acpid")
 
--- Widgets
-require("widgets/smapi")
-require("widgets/kaybeedee")
-require("widgets/mounter")
-require("widgets/newsbeuter")
-
--- Vicious
-require("vicious")
-require("vicious.contrib")
+local kbdee = require("widgets/kbdee")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -60,25 +51,20 @@ local home   = os.getenv("HOME")
 local cfgdir = awful.util.getdir("config")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
+local docurl = "file:///usr/share/doc/awesome/luadoc/index.html"
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init(cfgdir.."/themes/gns-ank/theme.lua")
---beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
-sexec("feh --bg-fill "..home.."/pics/bgs/vladstudio_windypress_1280x800_signed.jpg")
 
 -- Default application definitions.
 prg = {
-    terminal = "termit",
+    terminal = "urxvt",
     editor = os.getenv("EDITOR") 
         or "gvim",
-    browser = "luakit",
+    browser = "firefox",
     mua = os.getenv("XDGMAILER")
         or "thunderbird",
     locker = "lualock -n"
-}
-
-acpi = {
-    notify = true
 }
 
 -- Default modkey.
@@ -133,9 +119,10 @@ awful.menu.menu_keys = {
 mymenu = {}
 mymenu.awesome = {
    { "&manual",         prg.terminal .. " -e man awesome" },
-   { "LUA &docs",       prg.browser .. " /usr/share/doc/awesome-9999/html/luadoc/index.html" },
+   { "LUA &docs",       prg.browser .. " " .. docurl },
    { "&edit config",    prg.editor .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "&Xephyr awesome", "awe_Xephyr.sh" },
+   { "awm&tt",          "awmtt start -D 2 " },
+   { "&suspend",        "gksudo pm-suspend" },
    { "&restart",        awesome.restart },
    { "&quit",           acpid.awesome_quit }
 }
@@ -183,38 +170,30 @@ mymenu.main = awful.menu({
 -- Menubar configuration
 menubar.utils.terminal = prg.terminal -- Set the terminal for applications that require it
 
--- Battery widget
-battery = smapi.mywi
+-- }}}
 
--- Newsbeuter widget
-mynews = newsbeuter()
-
--- Keyboard map indicator and changer
-
-kaybeedee.layout.init({
+-- {{{ Keyboard switching
+-- configure the default layouts
+kbdee.cfg.layout = {
     { "gb", "" },
     { "lt", "std" },
     { "ru", "phonetic" },
-    { "gb", "dvorak" },
     { "fr", "" },
+    { "gb", "dvorak" },
     { "lt", "" }
-})
-kaybeedee.cfg.setxkbmap = {
+}
+
+kbdee.cfg.setxkbmap = {
     model = "thinkpadz60"
 }
-mykbdcfg = kaybeedee()
+
+mykbdmenu = kbdee.layout.menu_gen()
+mykbdwi = kbdee.new()
 -- }}}
 
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock(" %d/%m/%y, %H:%M ",60)
-mytextclock.buttons = awful.util.table.join(
-                      awful.button({ }, 3, function () exec(prg.editor .. " " .. home .. "/docs/TODO") end),
-                      awful.button({ mod.M }, 3, function () sexec("notify-send `cal -3`") end),
-                      awful.button({ }, 1, function () naughty.notify({text="lalal"}) end)
-                      )
-
-mylaunchers = wibox.layout.fixed.horizontal()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -286,18 +265,14 @@ for s = 1, screen.count() do
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylayoutbox[s])
     left_layout:add(mytaglist[s])
-    left_layout:add(mylaunchers)
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(mynews)
     right_layout:add(mytextclock)
     -- systray is only on the first screen.
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(battery)
-    right_layout:add(mykbdcfg)
-    --right_layout:add(volume.widget)
+    right_layout:add(mykbdwi)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -347,7 +322,6 @@ globalkeys = awful.util.table.join(
                 client.focus:raise()
             end
         end),
-    awful.key({ mod.M        }, "p", function () osd.notify({text="Trying, is it working?"}) end),
 
     -- Standard program
     awful.key({ mod.M        }, "Return",  function () exec(prg.terminal) end),
@@ -366,12 +340,14 @@ globalkeys = awful.util.table.join(
     awful.key({ mod.M, mod.S }, "n",   function () awful.client.restore() end),
 
     -- Utils
-    awful.key({ mod.S, mod.A }, "#44", function () kaybeedee.layout.switch(1) end),
-    awful.key({ mod.S, mod.A }, "#45", function () kaybeedee.layout.switch(2) end),
-    awful.key({ mod.S, mod.A }, "#46", function () kaybeedee.layout.switch(3) end),
-    awful.key({ mod.S, mod.A }, "#47", function () kaybeedee.layout.switch(4) end),
+    awful.key({ mod.S, mod.A }, "#43", function () mykbdmenu:toggle({ keygrabber = true }) end),
+    awful.key({ mod.S, mod.A }, "#44", function () kbdee.layout.switch(1) end),
+    awful.key({ mod.S, mod.A }, "#45", function () kbdee.layout.switch(2) end),
+    awful.key({ mod.S, mod.A }, "#46", function () kbdee.layout.switch(3) end),
+    awful.key({ mod.S, mod.A }, "#47", function () kbdee.layout.switch(4) end),
 
     -- FIXME make it work properly. Now it just turns off.
+    --[[
     awful.key({ }, "XF86AudioPlay", 
         function () 
             local status = mpc:send("status")
@@ -386,6 +362,7 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioStop", function () mpc:stop() end),
     awful.key({ }, "XF86AudioPrev", function () mpc:previous() end),
     awful.key({ }, "XF86AudioNext", function () mpc:next() end),
+    --]]
     awful.key({ }, "XF86Launch1",   function () sexec("if ps -A | grep pavucontrol; then pkill pavucontrol; else pavucontrol; fi") end),
     awful.key({ mod.M }, "XF86Launch1",   function () sexec(prg.terminal .. " -e alsamixer") end),
     awful.key({ }, "XF86AudioRaiseVolume", function () sexec("pmixer up") end),
@@ -398,13 +375,12 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86Battery",       function () end),   -- Fn + F3
     awful.key({ }, "XF86Sleep",         function () end),   -- Fn + F4
     awful.key({ }, "XF86WLAN",          function () end),   -- Fn + F5
-    awful.key({ }, "XF86Webcam",        function () end),   -- Fn + F6
+    awful.key({ }, "XF86WebCam",        function () end),   -- Fn + F6
     awful.key({ }, "XF86Display",       function () end),   -- Fn + F7
     awful.key({ }, "XF86Suspend",       function () end),   -- Fn + F12
 
     awful.key({ mod.M, mod.S }, "i",   function () hfunc.lua_xev() end),
     -- FIXME rewrite thing to use some menus and udisks directly
-    awful.key({ mod.M, mod.S }, "m",   function () mounter.traydevice(mypromptbox) end),
     awful.key({ mod.M,       }, "d",
             function()
                 local s = mouse.screen
@@ -510,9 +486,6 @@ clientbuttons = awful.util.table.join(
 root.keys(globalkeys)
 -- }}}
 
--- Keymap
-client.add_signal("property::keymap")
-
 -- {{{ Rules
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -552,16 +525,18 @@ awful.rules.rules = {
       properties = { floating = true, ontop = true, sticky = true } },
     { rule = { class = "Skype" },
       properties = { tag = tags[1][6] } },
+    { rule = { name = "Call with", class = "Skype" },
+      properties = { floating = true, ontop = true } },
     -- Web browsers and MUAs
     { rule_any = { 
         instance = { "Navigator" },
         class = { "Icecat", "Firefox", "Chrome", "luakit" }
     },
-      properties = { tag = tags[1][2] } },
+      properties = { tag = tags[screen.count()][2] } },
     { rule = { class = "Thunderbird" },
       properties = { tag = tags[1][5] } },
     -- Icon defeinitions
-    { rule = { instance = "termit" },
+    { rule = { instance = "urxvt" },
       properties = { icon = awesome.load_image(theme.icon.terminal) } },
     { rule = { instance = "gvim" },
       properties = { icon = awesome.load_image(theme.icon.editor) } },
@@ -593,7 +568,6 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-client.add_signal("property::keymap")
 client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}

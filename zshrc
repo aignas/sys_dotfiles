@@ -5,8 +5,8 @@ setopt CORRECT					# command CORRECTION
 setopt EXTENDED_HISTORY		# puts timestamps in history
 
 # set environmental variables
-if [[ -f ~/.scripts/set-env ]]; then
-    . ${HOME}/.scripts/set-env
+if [[ -f ~/bin/set-env ]]; then
+    . ${HOME}/bin/set-env
 fi
 
 fpath=($fpath $HOME/.zsh/func)
@@ -36,7 +36,7 @@ autoload -U compinit; compinit
 promptinit
 
 # Use the otype prompt theme
-prompt gns_ank
+prompt walters
 
 ############################## Keybindings #####################################
 bindkey -v      # vim keybinding mode

@@ -12,7 +12,7 @@
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "" }
+theme.wallpaper_cmd = { "feh --bg-fill /home/gns-ank/pictures/wallpapers/vladstudio_windypress_1280x800_signed.jpg" }
 -- }}}
 
 -- {{{ Styles
@@ -89,7 +89,7 @@ theme.menu_submenu_icon      = "/usr/share/awesome/themes/default/submenu.png"
 
 -- {{{ Application icons
 theme.icon_theme             = "oxygen"
-theme.icon_theme1            = "/usr/share/icons/oxygen/48x48/"
+theme.icon_theme1            = "/usr/share/icons/gnome/48x48/"
 theme.icon = {
     cat_media    = theme.icon_theme1 .. "categories/applications-multimedia.png",
     cat_devel    = theme.icon_theme1 .. "categories/applications-development.png",

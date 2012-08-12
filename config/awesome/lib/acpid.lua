@@ -30,13 +30,13 @@ local dbus_restart   = 'dbus-send --system --print-reply --dest=org.freedesktop.
 local dbus_suspend   = "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend"
 local dbus_hibernate = "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Hibernate"
 
-module('acpid')
+acpid = {}
 
 --- Notification helper for acpi
 -- This basically wraps the naughty.notify
 -- @param args: this parameter is a table consisting of text, title,
 --              timeout and preset entries.
-function notify (args)
+function acpid.notify (args)
     -- Set the required parameters
     local text = args.text or ""
     local title = args.title or "ACPI"
@@ -57,7 +57,7 @@ function notify (args)
     })
 end
 
-function lock (...)
+function acpid.lock (...)
     local t = {...}
     if #t == 0 then t = prg.locker end
 
@@ -73,18 +73,18 @@ function lock (...)
     return true
 end
 
-function suspend (method)
+function acpid.suspend (method)
     -- Select a method
     local method = method or "ram"
 
-    notify({ text="Computer is going to suspend to " .. method })
+    acpid.notify({ text="Computer is going to suspend to " .. method })
     -- Actually do something
     if method == "ram" then
-        sexec("sudo pm-suspend")
+        sexec("gksudo pm-suspend")
     elseif method == "disk" then
-        sexec("sudo pm-hibernate")
+        sexec("gksudo pm-hibernate")
     elseif method == "both" then
-        sexec("sudo pm-suspend-hybrid")
+        sexec("gksudo pm-suspend-hybrid")
     end
 
     -- Lock the screen
@@ -92,7 +92,7 @@ function suspend (method)
 end
 
 -- Poweroff or do something different
-function awesome_quit ()
+function acpid.awesome_quit ()
     local quit_not = naughty.notify({title = "What would you like to do?",
         text = "" .. "1. "   .. "(L)og out"
                   .. "\n2. " .. "(H)alt"
@@ -120,16 +120,17 @@ function awesome_quit ()
         elseif key == "3" or key == "r" or key == "R" then
             sexec(dbus_restart)
         elseif key == "4" or key == "s" or key == "S" then
-            suspend("ram")
+            acpid.suspend("ram")
         elseif key == "5" or key == "d" or key == "D" then
-            suspend("disk")
+            acpid.suspend("disk")
         elseif key == "6" or key == "b" or key == "B" then
-            suspend("both")
+            acpid.suspend("both")
         end
         naughty.destroy(quit_not)
         capi.keygrabber.stop()
     end)
 end
 
+return acpid
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=4:softtabstop=4:textwidth=80:foldmethod=marker

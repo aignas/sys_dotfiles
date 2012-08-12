@@ -142,7 +142,7 @@
       <Window name="locations" visible="no" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
       <Window name="bigclock" visible="no" x-off="153" y-off="387" x-size="702" y-size="128"/>
       <Window name="GlobalPortMatrix-audio" visible="no" x-off="0" y-off="18" x-size="627" y-size="660"/>
-      <Window name="GlobalPortMatrix-midi" visible="no" x-off="-1" y-off="-1" x-size="-1" y-size="-1"/>
+      <Window name="GlobalPortMatrix-midi" visible="no" x-off="246" y-off="159" x-size="545" y-size="569"/>
       <Tearoffs>
         <transport tornoff="no"/>
         <mouse-mode tornoff="no"/>
@@ -150,8 +150,8 @@
     </UI>
   </Extra>
   <ControlProtocols>
+    <Protocol name="Generic MIDI" active="no"/>
     <Protocol name="Mackie" active="no"/>
     <Protocol name="Open Sound Control (OSC)" active="no"/>
-    <Protocol name="Generic MIDI" active="no"/>
   </ControlProtocols>
 </Ardour>
