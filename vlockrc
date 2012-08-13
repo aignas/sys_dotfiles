@@ -1,0 +1,6 @@
+# User environmental variable. Set it to your username
+USER=gns-ank
+# The lock message
+VLOCK_MESSAGE="This is now locked.
+
+Please press [Return] to unlock it."

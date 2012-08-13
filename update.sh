@@ -27,6 +27,11 @@ update () {
 
     if [ -f "$base_file" ]
     then
+        if ${SYNC}; then
+            tmp=${base_file}
+            base_file=${file}
+            file=${tmp}
+        fi
         if diff "$base_file" "$file" > /dev/null; then
             # File did not change
             if ${VERBOSE}; then
@@ -34,7 +39,7 @@ update () {
             fi
             return
         else
-            if [[ `stat -c %Y $base_file` -lt `stat -c %Y $file` ]]; then
+            if  [[ `stat -c %Y $base_file` -lt `stat -c %Y $file` ]]; then
                 echo -e "${col_outdate}Skipping${col_end} $file"
                 return
             fi
@@ -42,7 +47,7 @@ update () {
             if ${SYNC}; then
                 echo -e "${col_update}Synchronising${col_end} $base_file" >& 2
                 if ! ${PRETEND}; then
-                    cp -vira "$file" "$base_file"
+                    cp -vira "$base_file" "$file"
                 fi
             else
                 echo -e "${col_update}Updating${col_end} $file" >& 2
@@ -70,7 +75,7 @@ update_dir ()
 {
     for file in $@*; do
         case $file in
-            update.sh|README)
+            update.sh|README|.gitignore)
                 continue
                 ;;
             *)
@@ -81,6 +86,7 @@ update_dir ()
 }
 
 main() {
+    # Set the settings
     export PRETEND=false
     export VERBOSE=false
     export SYNC=false
@@ -104,19 +110,31 @@ ${col_unknown}Skipping: Unknown file type or there is no local copy pressent
 ${col_end}\
 ============================================================================\
 "
-
+    # First pass of the variables
     for var in $@; do
         case $var in
             -p|--pretend)
-                export PRETEND=true; shift
+                export PRETEND=true
                 echo -e "\
 Running in PRETEND mode (no actual changes will be done)
 ============================================================================\
 "
                 ;;
             -v|--verbose)
-                export VERBOSE=true; shift
+                export VERBOSE=true
                 ;;
+            -b|--backup|-s|--sync)
+                # do nothing
+                ;;
+            -h|--help|*)
+                print_help 
+                return 0
+                ;;
+        esac
+    done
+
+    for var in $@; do
+        case $var in
             -b|--backup)
                 export SYNC=false
                 update_dir
@@ -125,10 +143,6 @@ Running in PRETEND mode (no actual changes will be done)
             -s|--sync)
                 export SYNC=true
                 update_dir
-                return 0
-                ;;
-            -h|--help|*)
-                print_help 
                 return 0
                 ;;
         esac

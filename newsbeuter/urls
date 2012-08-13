@@ -1,0 +1,30 @@
+http://www.lib.cam.ac.uk/api/voyager/loansFeed.php?patron_id=213540:efa128a8e019a738dab65def5c6fde82&standalone=&database=&format=rss ~Cambridge
+http://feeds.feedburner.com/Phoronix ~Phoronix news Linux 
+http://lwn.net/headlines/rss ~LWN news Linux
+http://xkcd.com/atom.xml ~XKCD comic xkcd
+http://rss.slashdot.org/Slashdot/slashdot ~./ news Linux
+
+http://git.pwmt.org/?p=zathura.git;a=atom;h=refs/heads/develop ~pwmt-zathura git pwmt
+http://git.pwmt.org/?p=zathura-pdf-poppler.git;a=atom ~pwmt-pdf-poppler git pwmt
+http://git.pwmt.org/?p=zathura-pdf-mupdf.git;a=atom ~pwmt-pdf-mupdf git pwmt
+http://git.pwmt.org/?p=zathura-ps.git;a=atom ~pwmt-ps git pwmt
+http://git.pwmt.org/?p=zathura-djvu.git;a=atom ~pwmt-djvu git pwmt
+http://git.pwmt.org/?p=zathura-epub.git;a=atom ~pwmt-epub git pwmt
+http://git.pwmt.org/?p=girara.git;a=atom;h=refs/heads/develop ~pwmt-girara git pwmt
+http://git.naquadah.org/?p=awesome.git;a=atom ~awesome git awesome lua
+http://rakarrack.git.sourceforge.net/git/gitweb.cgi?p=rakarrack/rakarrack;a=atom ~Rakarrack git
+https://github.com/matplotlib/matplotlib/commits/master.atom ~Matplotlib git py
+https://github.com/ipython/ipython/commits/master.atom ~IPython git py
+https://github.com/mason-larobina/luakit/commits/develop.atom ~Luakit git lua
+https://github.com/Dieterbe/luakit/commits/luamail.atom ~Luamail git lua
+https://github.com/Guff/lualock/commits/master.atom ~Lualock git lua
+https://github.com/nonstop/termit/commits/master.atom ~Termit git lua
+
+http://mangafox.me/rss/naruto.xml ~Naruto manga
+http://mangafox.me/rss/bleach.xml ~Bleach manga
+http://mangafox.me/rss/one_piece.xml "~One Piece" manga
+http://mangafox.me/rss/history_s_strongest_disciple_kenichi.xml ~Kenichi manga
+http://mangafox.me/rss/koimoku.xml ~Koimoku manga
+http://mangafox.me/rss/nozoki_ana.xml "~Nozoki Ana" manga
+http://mangafox.me/rss/hetakoi.xml ~Hetakoi manga
+http://mangafox.me/rss/atori_shou.xml "~Atori Shou" manga

@@ -46,10 +46,22 @@ function cdr ()
     case ${1} in
         a)  DIR=awesome         ;;
         p)  DIR=arch/pkgbuilds  ;;
+        sd) DIR=sys/dotfiles    ;;
+        sr) DIR=sys/rootfiles   ;;
         *)  DIR=${1}            ;;
     esac
     cd ~/repo/${DIR}
     return 0
+}
+
+function cp_dot ()
+{
+    for file in $@; do
+        FULL_PATH="$(pwd)/$file"
+        DIR=$(echo -e "${FULL_PATH}" | sed 's/\([^.]*\)[.]//')
+        echo -e "Coppying ${file} to ${HOME}/repo/sys/dotfiles/${DIR}"
+        cp -ar $(pwd)/${file} ${HOME}/repo/sys/dotfiles/${DIR}
+    done
 }
 
 

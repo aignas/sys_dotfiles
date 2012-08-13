@@ -1,0 +1,71 @@
+# This is made to work with mutt and as a daemon
+# © Ignas Anikevicius
+
+[general]
+# NOTE: cronjob calls the quiet UI with -u
+ui = quiet
+accounts = gmail, hermes
+maxsyncaccounts = 2
+
+#{{{ Gmail config
+[Account gmail]
+localrepository = gmail-local
+remoterepository = gmail-remote
+autorefresh = 5
+quick = 30
+status_backend = sqlite
+
+[Repository gmail-local]
+type = Maildir
+sep = .
+localfolders = ~/mail/gmail
+restoreatime = no
+maxconnections = 8
+folderfilter = lambda folder: folder not in '[Google Mail].All Mail'
+
+[Repository gmail-remote]
+type = Gmail
+#remoteuser =
+#remotepass =
+cert_fingerprint = f3043dd689a2e7dddfbef82703a6c65ea9b634c1
+realdelete = no
+keepalive = 60
+maxconnections = 8
+#}}}
+
+#{{{ Hermes config
+[Account hermes]
+localrepository = hermes-local
+remoterepository = hermes-remote
+autorefresh = 5
+quick = 30
+status_backend = sqlite
+
+[Repository hermes-local]
+type = Maildir
+sep = .
+localfolders = ~/mail/hermes
+restoreatime = no
+maxconnections = 8
+
+[Repository hermes-remote]
+type = IMAP
+remotehost = imap.hermes.cam.ac.uk
+#remoteuser = 
+#remotepass =
+realdelete = no
+keepalive = 60
+maxconnections = 8
+#}}}
+
+#{{{ Mutt stuff
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+#}}}
+
+# vim: ft=cfg tw=0 foldmethod=marker
