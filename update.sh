@@ -75,7 +75,7 @@ update_dir ()
 {
     for file in $@*; do
         case $file in
-            update.sh|README|.gitignore)
+            update.sh|README|.gitignore|*.list)
                 continue
                 ;;
             *)
