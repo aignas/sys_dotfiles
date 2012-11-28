@@ -1,12 +1,16 @@
 # This is made to work with mutt and as a daemon
 # © Ignas Anikevicius
 
+#{{{ General
 [general]
 # NOTE: cronjob calls the quiet UI with -u
-ui = quiet
-accounts = gmail, hermes
+ui = basic
+accounts = gmail,hermes
 maxsyncaccounts = 2
 
+# This is found on https://dev.gentoo.org/~tomka/mail.html
+pythonfile=~/bin/offlineimap-helpers.py
+#}}}
 #{{{ Gmail config
 [Account gmail]
 localrepository = gmail-local
@@ -18,21 +22,26 @@ status_backend = sqlite
 [Repository gmail-local]
 type = Maildir
 sep = .
-localfolders = ~/mail/gmail
+localfolders = ~/Mail/gmail
 restoreatime = no
 maxconnections = 8
-folderfilter = lambda folder: folder not in '[Google Mail].All Mail'
+nametrans = lambda foldername: re.sub ( 'GM', '[Google Mail]', foldername )
+folderfilter = lambda folder: folder not in 'GM.All Mail'
+idlefolders = [ 'INBOX' ]
 
 [Repository gmail-remote]
 type = Gmail
-#remoteuser =
-#remotepass =
-cert_fingerprint = f3043dd689a2e7dddfbef82703a6c65ea9b634c1
+sep = /
+remoteusereval = get_username("imap.gmail.com")
+remotepasseval = get_password("imap.gmail.com")
+cert_fingerprint = 6d1b5b5ee0180ab493b71d3b94534b5ab937d042
 realdelete = no
 keepalive = 60
 maxconnections = 8
-#}}}
+nametrans = lambda foldername: re.sub ( '^\[Google Mail\]', 'GM', foldername )
+idlefolders = [ 'INBOX' ]
 
+#}}}
 #{{{ Hermes config
 [Account hermes]
 localrepository = hermes-local
@@ -44,20 +53,19 @@ status_backend = sqlite
 [Repository hermes-local]
 type = Maildir
 sep = .
-localfolders = ~/mail/hermes
+localfolders = ~/Mail/hermes
 restoreatime = no
 maxconnections = 8
 
 [Repository hermes-remote]
 type = IMAP
 remotehost = imap.hermes.cam.ac.uk
-#remoteuser = 
-#remotepass =
+remoteusereval = get_username("imap.hermes.cam.ac.uk")
+remotepasseval = get_password("imap.hermes.cam.ac.uk")
 realdelete = no
 keepalive = 60
 maxconnections = 8
 #}}}
-
 #{{{ Mutt stuff
 [mbnames]
 enabled = yes
@@ -68,4 +76,4 @@ sep = " "
 footer = "\n"
 #}}}
 
-# vim: ft=cfg tw=0 foldmethod=marker
+# vim: ft=cfg tw=0 fdm=marker

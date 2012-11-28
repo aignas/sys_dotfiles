@@ -1,36 +1,44 @@
-
 #unset record                           # required to prevent duplicates in Sent
 set mbox_type   = Maildir               # mailbox type
 set sendmail    = /usr/bin/msmtp        # use msmtp 'default' account
+set sendmail_wait = -1
 
 # mailboxes
 source ~/.mutt/mailboxes                # Source the desription of mailboxes
 
 # Set the folders
-set folder      = $HOME/mail            # root folder
-set spoolfile   = +/gmail/INBOX         # default inbox folder
-set record      = +/sent                # default sent folder
-set postponed   = +/postponed           # default postponed folder
+set folder      = $HOME/Mail            # root folder
+set spoolfile   = +gmail/INBOX          # default inbox folder
+set record      = +sent                 # default sent folder
+set postponed   = +postponed            # default postponed foldeo
 set mailcap_path = ~/.mutt/mailcap      # path to mailcap
 set tmpdir      = ~/.mutt/tmp           # put temp folder elsewhere
+set alias_file  = ~/.mutt/aliases       # put aliases to the mutt folder
+set signature   = ~/.mutt/signature     # use a signature file
 
-# main options
-set realname            = "Ignas Anikevicius"           # who am i?
-set from                = "anikevicius@gmail.com"       # who am i?
-set envelope_from                                       # which from?
-set mail_check          = 0                             # check for mail always
-unset move                                              # gmail does that
-set delete                                              # don't ask, just do
-unset confirmappend                                     # don't ask, just do!
-set quit                                                # don't ask, just do!!
-unset mark_old                                          # read/new is good enough for me
+#{{{ main options
+set realname        = "Ignas Anikevicius"           # who am i?
+set from            = "anikevicius@gmail.com"       # who am i?
+set envelope_from                                   # which from?
+set mail_check      = 0                             # check for mail always
+unset move                                          # gmail does that
+set delete                                          # don't ask, just do
+unset confirmappend                                 # don't ask, just do!
+set quit                                            # don't ask, just do!!
+unset mark_old                                      # read/new is good enough for me
+#}}}
 
-# index options
-set sort                = threads                       # like gmail 
-set sort_aux            = reverse-last-date-received    # like gmail
+#{{{ index options
+set sort            = threads                       # like gmail 
+set sort_aux        = reverse-last-date-received    # like gmail
 set sort_re                                             # thread based on reply_regexp
 
-# pager
+# This is the thread view format:
+#   bits taken from: http://heipei.net/2009/09/10/mutt-threading-like-a-pro/
+set date_format     ="%d/%m/%y %I:%M:%S %Z"
+set index_format    ="%?M?+& ?%2M %2e %Z %-20.20F (%4c) %-75.75s %> [%d]"
+#}}}
+#{{{ pager
 set pager_index_lines   = 12                            # show 8 messages when in pager
 set pager_context       = 5                             # show five lines when skipping in pager
 set pager_stop                                          # don't go to next message automatically
@@ -39,57 +47,27 @@ set smart_wrap                                          # don't split words
 set tilde                                               # show tildes like in vim
 unset markers                                           # no ugly plus signs
 
-# composing mail
-set fcc_attach                                          # save attachments with the body
-unset mime_forward                                      # forward attachments as part of body
-set forward_format      = "Fwd: %s"                     # format for subject when forwarding
-set include                                             # include message in replies
-set forward_quote                                       # include message in forwards
-set editor = /usr/bin/vim                               # My holy editor
-
 # headers to show
 ignore *                                                # ignore all headers
 unignore from: to: cc: date: subject:                   # show only these
 hdr_order from: to: cc: date: subject:                  # and in this order
-
-# Choose the smtp account
-# FIXME Where did I find this?
-macro generic "<esc>1" ":set from=anikevicius@gmail.com"
-macro generic "<esc>2" ":set from=ia277@cam.ac.uk"
-
-# Choose inbox
-macro index "<f2>i" '<change-folder>+gmail/INBOX<enter>'
-macro index "<f2>l" '<change-folder>+gmail/lists<enter>'
-macro index "<f2>f" '<change-folder>+gmail/Facebook<enter>'
-macro index "<f2>s" '<change-folder>+gmail/[Google Mail].Spam<enter>'
-macro index "<f3>i" '<change-folder>+hermes/INBOX<enter>'
-macro index "<f3>l" '<change-folder>+hermes/lists<enter>'
-set sleep_time = 0
-
-
-# This is the thread view format:
-#   bits taken from: http://heipei.net/2009/09/10/mutt-threading-like-a-pro/
-set date_format="%d/%m/%y %I:%M:%S %Z"
-set index_format="%?M?+& ?%2M %2e %Z %-20.20F (%4c) %-50.50s %> [%d]"
-# Collapsing the threads
-bind index - collapse-thread
-bind index _ collapse-all
-#
-unset collapse_unread
-
-# Beep on message arrival
-set beep_new            = yes
 
 # Display html emails inline and define the order
 set implicit_autoview
 auto_view text/html
 alternative_order text/plain text/html
 
-#FIXME delete not-interesting conversations
-#folder-hook +gmail/lists/.* '!~(!~hReferences|~F|~sfwd)'
-#folder-hook +hermes/lists/.* '!~(!~hReferences|~F|~sfwd)'
+#}}}
+#{{{ composing mail
+set fcc_attach                          # save attachments with the body
+unset mime_forward                      # forward attachments as part of body
+set forward_format  = "Fwd: %s"         # format for subject when forwarding
+set include                             # include message in replies
+set forward_quote                       # include message in forwards
+set editor          = /usr/bin/vim      # My holy editor
+#}}}
 
-# Colors
-source ~/.mutt/colors.zenburn
+source ~/.mutt/keybinds         # Keybinds
+source ~/.mutt/colors.zenburn   # Colors
 
 # vim: fdm=marker
