@@ -1,6 +1,7 @@
 -- Global variables for luakit
 globals = {
-    homepage            = "http://luakit.org/",
+    homepage            = "http://archlinux.org/",
+ -- homepage            = "http://luakit.org/",
  -- homepage            = "http://github.com/mason-larobina/luakit",
     scroll_step         = 40,
     zoom_step           = 0.1,
@@ -22,6 +23,7 @@ local lkv = string.match(luakit.version, "^(%d+.%d+.%d+)")
 globals.useragent = string.format("Mozilla/5.0 (%s) AppleWebKit/%s+ (KHTML, like Gecko) WebKitGTK+/%s luakit%s",
     string.sub(arch, 1, -2), luakit.webkit_user_agent_version,
     luakit.webkit_version, (lkv and ("/" .. lkv)) or "")
+globals.useragent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"
 
 -- Search common locations for a ca file which is used for ssl connection validation.
 local ca_files = {

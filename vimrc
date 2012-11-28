@@ -362,8 +362,8 @@ set tabstop=4
 
 map <leader>t2 :set shiftwidth=2<cr>
 map <leader>t4 :set shiftwidth=4<cr>
-au FileType html,python,vim,javascript setl shiftwidth=2
-au FileType html,python,vim,javascript setl tabstop=2
+au FileType html,php,python,vim,javascript setl shiftwidth=2
+au FileType html,php,python,vim,javascript setl tabstop=2
 
 set smarttab
 set lbr
@@ -397,6 +397,10 @@ map <leader>sn :setlocal nospell<CR>
 
 " Plugin configuration
 
+"{{{ Pathogen
+
+call pathogen#infect()
+"}}}
 "{{{ Gist
 
 let g:gist_clip_command = 'xclip -selection clipboard'
@@ -437,28 +441,39 @@ let g:bufExplorerSortBy = "name"
 
 autocmd BufRead,BufNew :call UMiniBufExplorer
 "}}}
-"{{{ Automatic LaTeX Plugin
-
+""{{{ Automatic LaTeX Plugin
+"
+"au FileType tex set sw=4
+"au FileType tex set iskeyword+=:
+"
+"let g:tex_flavor='latex'
+"
+"au FileType tex map <leader>ll :TEX<cr>
+"au FileType tex map <leader>lb :Bibtex<cr>
+"au FileType tex map <leader>lv :View<cr>
+"au FileType tex map <leader>ls :SyncTex<cr>
+"
+"au FileType tex let b:atp_Viewer="zathura"
+"au FileType tex let b:atp_TexOptions = "--shell-escape,--synctex=1"
+"
+"au FileType tex let g:atp_diacritics=0
+"
+"au FileType tex let g:atp_Compiler = "lualatex"
+"au FileType tex let g:atp_folding = 1
+"au FileType tex let g:atp_fold_environments = 1
+"au FileType tex let g:atp_python = "/usr/bin/python2"
+""au FileType tex let g:LatexBox_latexmk_options="-pvc"
+"
+""}}}
+"{{{ Vim LaTeX suite
 au FileType tex set sw=4
 au FileType tex set iskeyword+=:
 
 let g:tex_flavor='latex'
 
-au FileType tex map <leader>ll :TEX<cr>
-au FileType tex map <leader>lb :Bibtex<cr>
-au FileType tex map <leader>lv :View<cr>
-au FileType tex map <leader>ls :SyncTex<cr>
-
-au FileType tex let b:atp_Viewer="zathura"
-au FileType tex let b:atp_TexOptions = "--shell-escape,--synctex=1"
-
-au FileType tex let g:atp_diacritics=0
-
-au FileType tex let g:atp_Compiler = "lualatex"
-au FileType tex let g:atp_folding = 1
-au FileType tex let g:atp_fold_environments = 1
-au FileType tex let g:atp_python = "/usr/bin/python2"
-"au FileType tex let g:LatexBox_latexmk_options="-pvc"
+let g:Tex_MultipleCompileFormats='pdf'
+let g:Tex_DefaultTargetFormat='pdf'
+let g:Tex_CompileRule_pdf='lualatex -interaction=nonstopmode $*'
 
 "}}}
 
@@ -507,6 +522,10 @@ au FileType mail set tw=72
 au FileType mail set spell
 au FileType mail set spelllang=en_gb
 "}}}
+"{{{ LilyPond
+au FileType lilypond nmap <leader>ll :!lilypond %<cr>
+au FileType lilypond nmap <leader>lv :!mupdf %<.pdf<cr>
+"}}}
 
 "Snippets
 
@@ -522,12 +541,12 @@ autocmd FileType python inorea <buffer> cifelse <c-r>=IMAP_PutTextWithMovement("
 "}}}
 "{{{ HTML
 
-autocmd FileType cheetah,html inorea <buffer> cahref <c-r>=IMAP_PutTextWithMovement('<a href="<++>"><++></a>')<cr>
-autocmd FileType cheetah,html inorea <buffer> cbold <c-r>=IMAP_PutTextWithMovement('<b><++></b>')<cr>
-autocmd FileType cheetah,html inorea <buffer> cimg <c-r>=IMAP_PutTextWithMovement('<img src="<++>" alt="<++>" />')<cr>
-autocmd FileType cheetah,html inorea <buffer> cpara <c-r>=IMAP_PutTextWithMovement('<p><++></p>')<cr>
-autocmd FileType cheetah,html inorea <buffer> ctag <c-r>=IMAP_PutTextWithMovement('<<++>><++></<++>>')<cr>
-autocmd FileType cheetah,html inorea <buffer> ctag1 <c-r>=IMAP_PutTextWithMovement("<<++>><cr><++><cr></<++>>")<cr>
+autocmd FileType cheetah,html,php inorea <buffer> cahref <c-r>=IMAP_PutTextWithMovement('<a href="<++>"><++></a>')<cr>
+autocmd FileType cheetah,html,php inorea <buffer> cbold <c-r>=IMAP_PutTextWithMovement('<b><++></b>')<cr>
+autocmd FileType cheetah,html,php inorea <buffer> cimg <c-r>=IMAP_PutTextWithMovement('<img src="<++>" alt="<++>" />')<cr>
+autocmd FileType cheetah,html,php inorea <buffer> cpara <c-r>=IMAP_PutTextWithMovement('<p><++></p>')<cr>
+autocmd FileType cheetah,html,php inorea <buffer> ctag <c-r>=IMAP_PutTextWithMovement('<<++>><++></<++>>')<cr>
+autocmd FileType cheetah,html,php inorea <buffer> ctag1 <c-r>=IMAP_PutTextWithMovement("<<++>><cr><++><cr></<++>>")<cr>
 
 "}}}
 

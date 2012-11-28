@@ -1,6 +1,7 @@
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=4:softtabstop=4:textwidth=80:foldmethod=marker
 
 -- Standard awesome library
+local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
@@ -86,22 +87,45 @@ layouts = {
 }
 -- }}}
 
+-- {{{ Wallpaper
+if beautiful.wallpaper then
+    for s = 1, screen.count() do
+        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+    end
+end
+-- }}}
+
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+    -- For the primary screen
+    { 
+        { "α", { layout = layouts[1] } },
+        { "β", { layout = layouts[1] } },
+        { "γ", { layout = layouts[2] } },
+        { "δ", { layout = layouts[2] } },
+        { "ε", { layout = layouts[2] } },
+        { "ζ", { layout = layouts[2], mwfact = 0.3 } }
+    },
+    -- For the secondary screen
+    {
+        { "α", { layout = layouts[1] } },
+        { "β", { layout = layouts[1] } },
+        { "γ", { layout = layouts[1] } },
+    }
+}
+
+-- Reformat the tags table
 for s = 1, screen.count() do
-    -- Define the names of the tags.
-    local tag = { "α","β","γ","δ","ε","ζ" }
-    -- Define the indeces of the layouts table to be used for the tag
-    -- creation
-    local tag_layout_idx  = { 2,1,2,2,2,2 }
-    -- Empty tag layout table which will be used later
-    local tag_layouts = {}
-    for i,k in ipairs(tag_layout_idx) do
-        tag_layouts[i] = layouts[k]
+    local tag = {}
+    for i,k in ipairs(tags[s]) do
+        table.insert(tag, i, awful.tag.add(k[1], k[2]))
+        if i==1 then
+            tag[i].selected = true
+        end
     end
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag(tag,s,tag_layouts)
+
+    tags[s] = tag
 end
 -- }}}
 
@@ -122,7 +146,6 @@ mymenu.awesome = {
    { "LUA &docs",       prg.browser .. " " .. docurl },
    { "&edit config",    prg.editor .. " " .. awful.util.getdir("config") .. "/rc.lua" },
    { "awm&tt",          "awmtt start -D 2 " },
-   { "&suspend",        "gksudo pm-suspend" },
    { "&restart",        awesome.restart },
    { "&quit",           acpid.awesome_quit }
 }
@@ -146,40 +169,28 @@ mymenu.devel = {
     { "m&atlab",        "matlab -desktop" },
 }
 
-mymenu.media = {
-    { "&MPD client",    prg.terminal .. " -e ncmpcpp" },
-    { "&Visualization", "projectM-pulseaudio" },
-    { "&GIMP",          "gimp" },
-    { "&Inkscape",      "inkscape" },
-    { "&QJackCtl",      "qjackctl" },
-    { "&Ardour",        "ardour" },
-}
-
 mymenu.main = awful.menu({ 
     items = { 
-        { "&terminal",  prg.terminal,   beautiful.icon.terminal },
-        { "---------", nil },
-        { "&media",     mymenu.media,   beautiful.icon.cat_media },
-        { "&science",   mymenu.devel,   beautiful.icon.cat_devel },
-        { "we&b",       mymenu.web,     beautiful.icon.cat_net },
-        { "&docs",      mymenu.docs},
-        { "a&wesome",   mymenu.awesome, beautiful.awesome_icon },
+        { "a&wesome",       mymenu.awesome, beautiful.awesome_icon },
+        { "---------",      nil },
+        { "&docs",          mymenu.docs},
+        { "&MPD client",    prg.terminal .. " -e ncmpcpp" },
     }
 })
 
 -- Menubar configuration
 menubar.utils.terminal = prg.terminal -- Set the terminal for applications that require it
-
+menubar.utils.wm_name  = "GNOME"
 -- }}}
 
 -- {{{ Keyboard switching
 -- configure the default layouts
 kbdee.cfg.layout = {
-    { "gb", "" },
+    { "gb", "dvorak" },
     { "lt", "std" },
     { "ru", "phonetic" },
     { "fr", "" },
-    { "gb", "dvorak" },
+    { "gb", "" },
     { "lt", "" }
 }
 
@@ -205,8 +216,8 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ mod.M }, 1, awful.client.movetotag),
                     awful.button({ }, 3, awful.tag.viewtoggle),
                     awful.button({ mod.M }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, awful.tag.viewnext),
-                    awful.button({ }, 5, awful.tag.viewprev)
+                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
                     )
 
 mytasklist = {}
@@ -215,6 +226,9 @@ mytasklist.buttons = awful.util.table.join(
                                               if c == client.focus then
                                                   c.minimized = true
                                               else
+                                                  -- Without this, the following
+                                                  -- :isvisible() makes no sense
+                                                  c.minimized = false
                                                   if not c:isvisible() then
                                                       awful.tag.viewonly(c:tags()[1])
                                                   end
@@ -324,9 +338,11 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ mod.M        }, "Return",  function () exec(prg.terminal) end),
+    awful.key({ mod.M        }, "Return",  function () exec(prg.terminal .. " -e tmux") end),
+    awful.key({ mod.M, mod.S }, "Return",  function () exec(prg.terminal) end),
     awful.key({ mod.M, mod.C }, "r",       function () awesome.restart() end),
     awful.key({ mod.M, mod.S }, "BackSpace", function () acpid.awesome_quit() end),
+    awful.key({              }, "Caps_Lock", function () hfunc.caps_notify() end),
 
     awful.key({ mod.M        }, "l", function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ mod.M        }, "h", function () awful.tag.incmwfact(-0.05)    end),
@@ -344,7 +360,7 @@ globalkeys = awful.util.table.join(
     awful.key({ mod.S, mod.A }, "#44", function () kbdee.layout.switch(1) end),
     awful.key({ mod.S, mod.A }, "#45", function () kbdee.layout.switch(2) end),
     awful.key({ mod.S, mod.A }, "#46", function () kbdee.layout.switch(3) end),
-    awful.key({ mod.S, mod.A }, "#47", function () kbdee.layout.switch(4) end),
+    awful.key({ mod.S, mod.A }, "#47", function () kbdee.layout.switch(5) end),
 
     -- FIXME make it work properly. Now it just turns off.
     --[[
@@ -363,21 +379,21 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioPrev", function () mpc:previous() end),
     awful.key({ }, "XF86AudioNext", function () mpc:next() end),
     --]]
-    awful.key({ }, "XF86Launch1",   function () sexec("if ps -A | grep pavucontrol; then pkill pavucontrol; else pavucontrol; fi") end),
-    awful.key({ mod.M }, "XF86Launch1",   function () sexec(prg.terminal .. " -e alsamixer") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () sexec("pmixer up") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () sexec("pmixer down") end),
-    awful.key({ }, "XF86AudioMute", function () sexec("pmixer mute") end),
+    --awful.key({ }, "XF86Launch1",   function () sexec("if ps -A | grep pavucontrol; then pkill pavucontrol; else pavucontrol; fi") end),
+    --awful.key({ mod.M }, "XF86Launch1",   function () sexec(prg.terminal .. " -e alsamixer") end),
+    --awful.key({ }, "XF86AudioRaiseVolume", function () sexec("pmixer up") end),
+    --awful.key({ }, "XF86AudioLowerVolume", function () sexec("pmixer down") end),
+    --awful.key({ }, "XF86AudioMute", function () sexec("pmixer mute") end),
 
     -- ACPI
     -- Empty bindings to not have any special keys grabbed by programs.
-    awful.key({ }, "XF86ScreenSaver",   function () end),   -- Fn + F2
-    awful.key({ }, "XF86Battery",       function () end),   -- Fn + F3
-    awful.key({ }, "XF86Sleep",         function () end),   -- Fn + F4
-    awful.key({ }, "XF86WLAN",          function () end),   -- Fn + F5
-    awful.key({ }, "XF86WebCam",        function () end),   -- Fn + F6
-    awful.key({ }, "XF86Display",       function () end),   -- Fn + F7
-    awful.key({ }, "XF86Suspend",       function () end),   -- Fn + F12
+    --awful.key({ }, "XF86ScreenSaver",   function () end),   -- Fn + F2
+    --awful.key({ }, "XF86Battery",       function () end),   -- Fn + F3
+    --awful.key({ }, "XF86Sleep",         function () end),   -- Fn + F4
+    --awful.key({ }, "XF86WLAN",          function () end),   -- Fn + F5
+    --awful.key({ }, "XF86WebCam",        function () end),   -- Fn + F6
+    --awful.key({ }, "XF86Display",       function () end),   -- Fn + F7
+    --awful.key({ }, "XF86Suspend",       function () end),   -- Fn + F12
 
     awful.key({ mod.M, mod.S }, "i",   function () hfunc.lua_xev() end),
     -- FIXME rewrite thing to use some menus and udisks directly
@@ -431,8 +447,8 @@ clientkeys = awful.util.table.join(
         end),
     awful.key({ mod.M,       }, "m",
         function (c)
-            c.maximized_vertical   = not c.maximized_vertical
             c.maximized_horizontal = not c.maximized_horizontal
+            c.maximized_vertical   = not c.maximized_vertical
         end),
     awful.key({ mod.M        }, "i", function (c) hfunc.client_prop(c) end),
     awful.key({ mod.M, mod.C }, "i", function (c) hfunc.client_prop_all(c) end)
@@ -492,19 +508,22 @@ awful.rules.rules = {
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
+                     focus = awful.client.focus.filter,
                      size_hints_honor = false,
-                     focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons,
                  } 
     },
     -- floating clients
     { rule_any = { 
-        class = { "mplayer2" },
+        class = { "mplayer2", "fontforge" },
         instance = { "arandr", "gimp", "nitrogen", "pavucontrol", "matplotlib" }, 
         name = { "Event Tester", "Welcome to Wolfram Mathematica 8" }
     },
       properties = { floating = true } },
+    -- Gnome3 stuff
+    { rule = { class = "Nautilus", instance = "desktop_window" },
+      properties = { sticky = true, border_width = 0, skip_taskbar = true, focus = false } },
     -- JACK stuff
     { rule = { instance = "qjackctl" },
       properties = { ontop = true, floating = true, sticky = true } },
@@ -515,6 +534,9 @@ awful.rules.rules = {
       properties = { floating = false, 
                      maximized_vertical = true,
                      maximized_horizontal = true } },
+    -- Flash
+    { rule = { class = "Plugin-container" },
+      properties = { floating =  true } },
     -- Xephyr
     { rule = { instance = "Xephyr" },
         properties = { border_width = 0, floating = true } },
@@ -527,12 +549,24 @@ awful.rules.rules = {
       properties = { tag = tags[1][6] } },
     { rule = { name = "Call with", class = "Skype" },
       properties = { floating = true, ontop = true } },
+    { rule = { class = "Skype", instance = "skype", name = "Options" },
+      properties = { floating = true } },
     -- Web browsers and MUAs
     { rule_any = { 
         instance = { "Navigator" },
-        class = { "Icecat", "Firefox", "Chrome", "luakit" }
+        class = { "Icecat", "Firefox", "Chromium", "luakit" }
     },
       properties = { tag = tags[screen.count()][2] } },
+    { rule = { class = "Sushi-start", instance = "sushi-start" },
+      properties = { floating = true, border_width = 0,
+            --[[callback = function (c)
+                geo = c:geometry()
+                wa = screen[c.screen].workarea
+                geo.x = (wa.width - geo.width)/2
+                geo.y = (wa.height - geo.height)/2
+                c:geometry(geo)
+            end --]]
+        } },
     { rule = { class = "Thunderbird" },
       properties = { tag = tags[1][5] } },
     -- Icon defeinitions
@@ -547,27 +581,57 @@ awful.rules.rules = {
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
-
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    awful.client.setslave(c)
 
     if not startup then
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        awful.client.setslave(c)
+
         -- Put windows in a smart way, only if they does not set an initial position.
         if not c.size_hints.user_position and not c.size_hints.program_position then
             awful.placement.no_overlap(c)
             awful.placement.no_offscreen(c)
         end
     end
+    local titlebars_enabled = false
+    if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
+        -- Widgets that are aligned to the left
+        local left_layout = wibox.layout.fixed.horizontal()
+        left_layout:add(awful.titlebar.widget.iconwidget(c))
+
+        -- Widgets that are aligned to the right
+        local right_layout = wibox.layout.fixed.horizontal()
+        right_layout:add(awful.titlebar.widget.floatingbutton(c))
+        right_layout:add(awful.titlebar.widget.maximizedbutton(c))
+        right_layout:add(awful.titlebar.widget.stickybutton(c))
+        right_layout:add(awful.titlebar.widget.ontopbutton(c))
+        right_layout:add(awful.titlebar.widget.closebutton(c))
+
+        -- The title goes in the middle
+        local title = awful.titlebar.widget.titlewidget(c)
+        title:buttons(awful.util.table.join(
+                awful.button({ }, 1, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.move(c)
+                end),
+                awful.button({ }, 3, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.resize(c)
+                end)
+                ))
+
+        -- Now bring it all together
+        local layout = wibox.layout.align.horizontal()
+        layout:set_left(left_layout)
+        layout:set_right(right_layout)
+        layout:set_middle(title)
+
+        awful.titlebar(c):set_widget(layout)
+    end
 end)
 
-client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}

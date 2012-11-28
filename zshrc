@@ -9,6 +9,7 @@ if [[ -f ~/bin/set-env ]]; then
     . ${HOME}/bin/set-env
 fi
 
+# Make zsh-git work
 fpath=($fpath $HOME/.zsh/func)
 typeset -U fpath
 
@@ -31,12 +32,11 @@ export LESS_TERMCAP_us=$'\E[1;32m'    # begin underline
 setopt promptsubst
 
 # Load the prompt theme system
-autoload -U promptinit
+autoload -U promptinit; promptinit
 autoload -U compinit; compinit
-promptinit
 
 # Use the otype prompt theme
-prompt walters
+prompt gns-ank
 
 ############################## Keybindings #####################################
 bindkey -v      # vim keybinding mode

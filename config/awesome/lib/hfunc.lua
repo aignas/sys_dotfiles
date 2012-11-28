@@ -116,6 +116,31 @@ function hfunc.volume_feed (args)
                      timeout = 0 })
 end
 
+local caps_not
+function hfunc.caps_notify ()
+    title = "Caps Lock"
+    text = "Caps Lock"
+    naughty.destroy(caps_not)
+    capi.keygrabber.run(
+    function(modifiers, key, event)
+        local mod_t = {}
+        local mod = ""
+        for k, v in ipairs(modifiers) do mod_t[v] = true; mod = mod..v..";" end
+        if mod_t.Lock and event=="release" then
+            text = text .. " On"
+            capi.keygrabber.stop()
+        elseif mod_t.Lock and event=="release" then
+            text = text .. " en"
+            capi.keygrabber.stop()
+        end
+        caps_not = naughty.notify({ title=title, text=text })
+        if mod_t.Control and key == "c" then
+            if notif then naughty.destroy(notif) end
+            capi.keygrabber.stop()
+        end
+    end)
+end
+
 -- mounter
 function hfunc.lua_mount()
     local cliname = ""

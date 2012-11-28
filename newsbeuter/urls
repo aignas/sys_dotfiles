@@ -1,3 +1,6 @@
+http://www.archlinux.org/feeds/news/ ~ArchLinux news Linux
+https://planet.archlinux.org/atom.xml ~PlanetArch news Linux
+
 http://www.lib.cam.ac.uk/api/voyager/loansFeed.php?patron_id=213540:efa128a8e019a738dab65def5c6fde82&standalone=&database=&format=rss ~Cambridge
 http://feeds.feedburner.com/Phoronix ~Phoronix news Linux 
 http://lwn.net/headlines/rss ~LWN news Linux
@@ -28,3 +31,4 @@ http://mangafox.me/rss/koimoku.xml ~Koimoku manga
 http://mangafox.me/rss/nozoki_ana.xml "~Nozoki Ana" manga
 http://mangafox.me/rss/hetakoi.xml ~Hetakoi manga
 http://mangafox.me/rss/atori_shou.xml "~Atori Shou" manga
+

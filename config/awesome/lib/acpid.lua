@@ -29,6 +29,8 @@ local dbus_halt      = 'dbus-send --system --print-reply --dest=org.freedesktop.
 local dbus_restart   = 'dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart'
 local dbus_suspend   = "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend"
 local dbus_hibernate = "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Hibernate"
+local gnome_logout   = "gnome-session-quit --logout --no-prompt"
+local gnome_save     = "gnome-session-save"
 
 acpid = {}
 
@@ -80,9 +82,11 @@ function acpid.suspend (method)
     acpid.notify({ text="Computer is going to suspend to " .. method })
     -- Actually do something
     if method == "ram" then
-        sexec("gksudo pm-suspend")
+        --sexec("gksudo pm-suspend")
+        sexec(dbus_suspend)
     elseif method == "disk" then
-        sexec("gksudo pm-hibernate")
+        --sexec("gksudo pm-hibernate")
+        sexec(dbus_hibernate)
     elseif method == "both" then
         sexec("gksudo pm-suspend-hybrid")
     end
@@ -114,7 +118,9 @@ function acpid.awesome_quit ()
         end
         -- Do the right acpi event
         if     key == "1" or key == "l" or key == "L" then
-            capi.awesome.quit()
+            exec(gnome_save)
+            exec(gnome_logout)
+            --capi.awesome.quit()
         elseif key == "2" or key == "h" or key == "H" then
             sexec(dbus_halt)
         elseif key == "3" or key == "r" or key == "R" then

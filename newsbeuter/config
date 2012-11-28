@@ -1,19 +1,45 @@
-# Maximum number of items per thread
-max-items           100
-show-read-feeds     no
-reload-time         60
-show-read-articles  yes
+# Newsbeuter config file by gns-ank
+
+# Reloading 
 reload-threads      5
+reload-only-visible-feeds no
+reload-time         60
+download-retries    4
+
+# Notification
+notify-screen       yes
+notify-xterm        yes
 
 # Broweser
-#browser             luakit
-browser             firefox %u 2> /dev/null
+#browser             luakit %u 2> /dev/null
+browser             xdg-open %u 2> /dev/null
 external-url-viewer urlview
 
 # Default cache-file directory
 cache-file      "~/.newsbeuter/cache.db"
 cookie-cache    "~/.newsbeuter/cookies.txt"
 
-# Set notification settings
-#notify-program  "~/.scripts/newsbeuter_notify"
-#notify-format   "%f %n"
+# Display
+max-items           200 # Max per thread
+show-read-feeds     no
+show-read-articles  yes
+
+article-sort-order date-asc
+#feedlist-format "%S%n %11u %t"
+# Default
+articlelist-format  "%4i %f %D %6L %?T?|%-17T| ?%t"
+#datetime-format %m-%d
+
+#color background white black
+#color listnormal white black
+#color listfocus black white
+#color info black white
+#color article white black
+
+# Interface
+confirm-exit yes
+bind-key k up
+bind-key j down
+bind-key O open-in-browser-and-mark-read
+
+# vim: tw=80

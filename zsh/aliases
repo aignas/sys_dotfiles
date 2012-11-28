@@ -64,17 +64,10 @@ function cp_dot ()
     done
 }
 
-
 # Normal aliases
 alias visudo='sudo -E EDITOR=vim visudo'
 
 alias ls='ls --color=auto -FX'
-alias lsd='ls --color=auto -dX *(-/DN)'
-alias lsa='ls --color=auto -dX .*'
-alias ll='ls --color=auto -FlhX'
-alias lld='ls --color=auto -dlhX *(-/DN)'
-alias lla='ls --color=auto -dlhX .*'
-
 alias ..='cd ..'
 
 function mkcd() {
@@ -82,18 +75,9 @@ function mkcd() {
     cd $1
 }
 
-alias s='sudo -E'
-alias ss='sudo -Es'
-alias v='vim'
-alias gv='gvim'
-alias sv='sudo -E vim'
-
+alias sudo='sudo -E'
 alias pacman='pacman-color'
-alias p='pacman'
-alias sp='sudo pacman'
-alias cw='cower'
 
-alias r='ranger'
 alias g='git'
 
 #sufix aliases
@@ -107,5 +91,7 @@ if [ $TERM=='*256color' ]; then
 else
     alias tm='tmux -8'
 fi
+
+alias vime='vim -u ~/.vimencrypt -x'
 
 # vim: filetype=zsh

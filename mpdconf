@@ -1,5 +1,5 @@
-music_directory     "~/music/library"
-playlist_directory  "~/music/library/Playlists"
+music_directory     "~/Music/library"
+playlist_directory  "~/Music/library/Playlists"
 db_file             "~/.cache/mpd/mpd.db"
 log_file            "~/.cache/mpd/mpd.log"
 pid_file            "~/.cache/mpd/mpd.pid"

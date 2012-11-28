@@ -260,6 +260,7 @@
 ; (gtk_accel_path "<Actions>/RegionList/rlShowAuto" "")
 (gtk_accel_path "<Actions>/Region/show-rhythm-ferret" "<Alt>f")
 (gtk_accel_path "<Actions>/Editor/select-all-within-cursors" "u")
+; (gtk_accel_path "<Actions>/Region/choose-top-region-context-menu" "")
 ; (gtk_accel_path "<Actions>/JACK/Latency" "")
 ; (gtk_accel_path "<Actions>/RegionList/SortByRegionStartinFile" "")
 ; (gtk_accel_path "<Actions>/Editor/snap-magnetic" "")

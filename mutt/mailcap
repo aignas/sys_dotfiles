@@ -12,3 +12,4 @@ image/tiff; feh %s;
 image/gif; feh %s;
 
 application/pdf; zathura %s;
+application/*; /usr/bin/xdg-open %s;
