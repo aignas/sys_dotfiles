@@ -8,9 +8,9 @@ print_help() {
 This is the help file for the script.
 
 Usage:
-    -b|--backup
+    -r|--sync-repository
         Update the repository, or backup.
-    -s|--sync
+    -l|--sync-local
         Update the local files using the repository copies.
     -p|--pretend
         Do not actually sync, just check if there are any changes.
@@ -22,16 +22,18 @@ EOF
 }
 
 update () {
-    file=${DIR_TO}$@
-    base_file=${DIR_FROM}$file
+    # set the appropriate dirctories
+    # if $Sync is true, then logics is reversed
+    if ! ${SYNC}; then
+        file=${DIR_TO}$@
+        base_file=${DIR_FROM}$file
+    else
+        file=${DIR_FROM}$file
+        base_file=${DIR_TO}$@
+    fi
 
-    if [ -f "$base_file" ]
-    then
-        if ${SYNC}; then
-            tmp=${base_file}
-            base_file=${file}
-            file=${tmp}
-        fi
+    # Check if the $base file is a file
+    if [ -f "$base_file" ]; then
         if diff "$base_file" "$file" > /dev/null; then
             # File did not change
             if ${VERBOSE}; then
@@ -39,6 +41,7 @@ update () {
             fi
             return
         else
+            # Check if the $base_file is $older than file
             if  [[ `stat -c %Y $base_file` -lt `stat -c %Y $file` ]]; then
                 echo -e "${col_outdate}Skipping${col_end} $file"
                 return
@@ -47,26 +50,31 @@ update () {
             if ${SYNC}; then
                 echo -e "${col_update}Synchronising${col_end} $base_file" >& 2
                 if ! ${PRETEND}; then
-                    cp -vira "$base_file" "$file"
+                    # interactive copying of the files
+                    cp -i "$base_file" "$file"
                 fi
             else
                 echo -e "${col_update}Updating${col_end} $file" >& 2
                 if ! ${PRETEND}; then
-                    cp -R "$base_file" "$file"
+                    cp "$base_file" "$file"
                 fi
             fi
             return
         fi
     fi
 
-    if [ -d "$base_file" ]
-    then
+    # Check if the $base_file is a directory
+    if [ -d "$base_file" ]; then
+        # Check if there is a corresponding dir, if not, create it
+        if [ ! -d $file ]; then; 
+            mkdir -p $file
+        fi
         # Dirs are handled recursively
-        #echo "Recursively updating $file..."
         update_dir $file/
         return
     fi
 
+    # Notify the user if something unexpected happened
     echo -e "${col_unknown}Skipping${col_end} $file"
 }
 
@@ -101,14 +109,12 @@ main() {
 
     echo -e "\
 ${col_end}\
-============================================================================
 Colour codings:
 ${col_update}Updating: Local ver. is older
 ${col_skip}Skipping: Local ver. is the same
 ${col_outdate}Skipping: Local ver. is newer
 ${col_unknown}Skipping: Unknown file type or there is no local copy pressent
 ${col_end}\
-============================================================================\
 "
     # First pass of the variables
     for var in $@; do
@@ -117,14 +123,13 @@ ${col_end}\
                 export PRETEND=true
                 echo -e "\
 Running in PRETEND mode (no actual changes will be done)
-============================================================================\
 "
                 ;;
             -v|--verbose)
                 export VERBOSE=true
                 ;;
             -b|--backup|-s|--sync)
-                # do nothing
+                # do nothing as these will be processed later
                 ;;
             -h|--help|*)
                 print_help 
@@ -143,6 +148,10 @@ Running in PRETEND mode (no actual changes will be done)
             -s|--sync)
                 export SYNC=true
                 update_dir
+                return 0
+                ;;
+            -h|--help|*)
+                print_help 
                 return 0
                 ;;
         esac
