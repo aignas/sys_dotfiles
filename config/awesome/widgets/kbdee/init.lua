@@ -8,7 +8,7 @@ local tostring = tostring
 local tonumber = tonumber
 
 local awful = require('awful')
-local beautiful = require('beautiful')
+local theme = require('beautiful').get()
 local naughty = require('naughty')
 local imagebox = require('wibox.widget.imagebox')
 
@@ -19,15 +19,15 @@ local capi = {
 
 --}}}
 
-M = { mt = {} }
-M.layout = {}
+kbdee = { mt = {} }
+kbdee.layout = {}
 
 --{{{ Configuration of the widget
--- Make an empty table for the sexkbmap commands
-M.cfg = setmetatable({}, { __mode = 'k' })
+-- Make an empty table for the setxkbmap commands
+kbdee.cfg = setmetatable({}, { __mode = 'k' })
 
 -- Some aliases to ease my life
-M.cfg = {
+kbdee.cfg = {
     img_dir = awful.util.getdir("config") .. "/icons/wi_kbd",
     layout = {
         { "gb", "" },
@@ -35,6 +35,7 @@ M.cfg = {
     setxkbmap = {
         model = ""
     },
+    xmodmap = nil,
     current = 1
 }
 
@@ -55,10 +56,11 @@ Design of the whole thing:
 --
 --- This wraps the setxkbmap command, so that it becomes easier to use it
 -- Arguments are defined by a table list
-M.layout.setxkbmap = function (args)
+kbdee.layout.setxkbmap = function (args)
     -- Assign local vars
     local layout = tostring(args.layout)
     local variant = tostring(args.variant) or ""
+    local xmodmap = tostring(args.xmodmap) or nil
 
     -- Check if a layout is specified
     if #layout == 0 then
@@ -78,28 +80,34 @@ M.layout.setxkbmap = function (args)
         cmdstr = cmdstr .. " -variant " .. variant
     end
 
+    -- Add the xmodmap if present
+    if xmodmap then
+        cmdstr = cmdstr .. " && xmodmap " .. xmodmap
+    end
+
     return awful.util.spawn_with_shell(cmdstr)
 end
 
 --- Switches a layout and interacts with userdata which is configured before
 -- initializing the commands (hopefully)...
-M.layout.switch = function (idx)
+kbdee.layout.switch = function (idx)
     --Assign local vars
-    local layout_table = M.cfg.layout
-    local current = M.cfg.current
+    local layout_table = kbdee.cfg.layout
+    local current = kbdee.cfg.current
     local idx = tonumber(idx)
     local success = false
 
     -- Execute setxkbmap
     if idx ~= current then
-        success = M.layout.setxkbmap({
+        success = kbdee.layout.setxkbmap({
                     layout = layout_table[idx][1], 
-                    variant = layout_table[idx][2]
+                    variant = layout_table[idx][2],
+                    xmodmap = kbdee.cfg.xmodmap
                 })
     end
 
     if success then
-        M.cfg.current = idx
+        kbdee.cfg.current = idx
 
         w:emit_signal("kbdee::update")
         local cl = awful.client.focus.history.get(capi.mouse.screen, 0)
@@ -113,43 +121,42 @@ M.layout.switch = function (idx)
 end
 
 --- Selects the next layout in the list
-M.layout.next = function ()
-    local idx = M.cfg.current + 1
+kbdee.layout.next = function ()
+    local idx = kbdee.cfg.current + 1
 
     -- Out of bounds ?
-    if idx > M.cfg.layout_table then
+    if idx > kbdee.cfg.layout_table then
         idx = 1
     end
 
-    return M.layout.switch({
+    return kbdee.layout.switch({
         idx = idx
     })
 end
 
 --- Selects the previous layout in the list
-M.layout.prev = function ()
-    local idx = M.cfg.current - 1
+kbdee.layout.prev = function ()
+    local idx = kbdee.cfg.current - 1
 
     -- Out of bounds ?
     if idx == 0 then
-        idx = #M.cfg.layout_table
+        idx = #kbdee.cfg.layout_table
     end
 
-    return M.layout.switch({
+    return kbdee.layout.switch({
         idx = idx
     })
 end
 
-function M.layout.menu_gen ()
-    local theme = beautiful.get()
+function kbdee.layout.menu_gen ()
     local menu_table = {}
 
-    for i,entry in ipairs(M.cfg.layout) do
+    for i,entry in ipairs(kbdee.cfg.layout) do
         menu_table[i] = { 
             -- Name of the layout
             entry[1] .. " " .. entry[2], 
-            function () M.layout.switch(i) end, 
-            M.cfg.img_dir .. "/24/" .. entry[1] .. ".png"
+            function () kbdee.layout.switch(i) end, 
+            kbdee.cfg.img_dir .. "/24/" .. entry[1] .. ".png"
         }
     end
 
@@ -159,12 +166,12 @@ end
 
 --{{{ Imgbox commands
 local update = function (w, current)
-    local layout = M.cfg.layout[current][1]
-    w:set_image(M.cfg.img_dir .. "/48/" .. layout .. ".png")
+    local layout = kbdee.cfg.layout[current][1]
+    w:set_image(kbdee.cfg.img_dir .. "/48/" .. layout .. ".png")
 end
 
-M.new = function (cfg)
-    cfg = cfg or M.cfg
+kbdee.new = function (cfg)
+    cfg = cfg or kbdee.cfg
     w = imagebox()
 
     -- update the widget
@@ -183,13 +190,13 @@ M.new = function (cfg)
             local idx = awful.client.property.get(c,"kbdee::layout") or 1
 
             -- Do the actual switching
-            M.layout.switch(idx)
+            kbdee.layout.switch(idx)
         end
     )
 
     capi.client.connect_signal("kbdee::update", 
         function (c) 
-            awful.client.property.set(c, "kbdee::layout", M.cfg.current) 
+            awful.client.property.set(c, "kbdee::layout", kbdee.cfg.current) 
         end)
     
     -- return the widget
@@ -197,13 +204,12 @@ M.new = function (cfg)
 end
 --}}}
 
-
 -- Set the metatable, like other awful widgets and return it
-function M.mt:__call(...)
-    return M.new(...)
+function kbdee.mt:__call(...)
+    return kbdee.new(...)
 end
 
-return setmetatable(M, M.mt)
+return setmetatable(kbdee, kbdee.mt)
 
 -- ft - filetype
 -- et - expandtab

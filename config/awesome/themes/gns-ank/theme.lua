@@ -12,7 +12,7 @@
 
 -- {{{ Main
 theme = {}
---theme.wallpaper_cmd = { "feh --bg-fill /home/gns-ank/pictures/wallpapers/vladstudio_windypress_1280x800_signed.jpg" }
+theme.wallpaper = '/usr/share/backgrounds/gnome/Terraform-green.jpg'
 -- }}}
 
 -- {{{ Styles
@@ -88,19 +88,7 @@ theme.menu_submenu_icon      = "/usr/share/awesome/themes/default/submenu.png"
 -- }}}
 
 -- {{{ Application icons
-theme.icon_theme             = "Clarity-canus"
-theme.icon_theme_path        = "/usr/share/icons/gnome/48x48/"
-theme.icon_theme_ext         = ".png"
-theme.icon = {
-    cat_media    = theme.icon_theme_path .. "categories/applications-multimedia" .. theme.icon_theme_ext,
-    cat_devel    = theme.icon_theme_path .. "categories/applications-development" .. theme.icon_theme_ext,
-    cat_net      = theme.icon_theme_path .. "categories/applications-internet" .. theme.icon_theme_ext,
-    terminal     = theme.icon_theme_path .. "apps/utilities-terminal" .. theme.icon_theme_ext,
-    editor       = theme.icon_theme_path .. "apps/accessories-text-editor" .. theme.icon_theme_ext,
-    browser      = theme.icon_theme_path .. "apps/internet-web-browser" .. theme.icon_theme_ext,
-    mail_reader  = theme.icon_theme_path .. "apps/internet-mail" .. theme.icon_theme_ext,
-    file_manager = theme.icon_theme_path .. "apps/system-file-manager" .. theme.icon_theme_ext,
-}
+theme.icon_theme             = "gnome"
 -- }}}
 
 -- {{{ Layout
