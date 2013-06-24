@@ -32,12 +32,12 @@ let mapleader = ","
 let g:mapleader = ","
 
 "Fast saving
-nmap <leader>w :w!<cr>
+nmap <leader>w :w<cr>
 nmap <leader>f :find<cr>
 
 "Fast editing and reloading of the .vimrc
 map <leader>vs :source ~/.vimrc<cr>
-map <leader>ve :tabnew! ~/.vimrc<cr>
+map <leader>ve :e ~/.vimrc<cr>
 
 set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
 
@@ -45,19 +45,48 @@ set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/afte
 set undofile
 
 "}}}
+"{{{ PLUGIN: Vundle
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My Bundles here:
+"
+" original repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
+" NOTE: Clang-complete needs Clang to operate properly
+Bundle 'Rip-Rip/clang_complete'
+Bundle 'josephwecker/neutron.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'jnurmine/Zenburn'
+Bundle 'vim-pandoc/vim-pandoc'
+Bundle 'JuliaLang/julia-vim'
+" vim-scripts repos
+Bundle 'Gundo'
+Bundle 'YankRing.vim'
+" non github repos
+Bundle 'git://git.code.sf.net/p/atp-vim/code'
+
+" Use git instead of http for fetching git repos
+let g:vundle_default_git_proto = 'git'
+" ...
+
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+"}}}
 "{{{ Colors and Fonts
 
 " remove toolbar and menubar
 set go=aeg
 
 "Set font to Droid Sans Mono Slashed 12pt
-set gfn="Inconsolata\ 14"
+"set gfn="Inconsolata\ 14"
 
 colorscheme zenburn
-map <leader>= :colorscheme zenburn<cr>
-map <leader>- :colorscheme proton<cr>
-map <leader>0 :colorscheme less<cr>
-map <leader>9 :colorscheme print_bw<cr>
 
 "Enable syntax hl
 syntax enable
@@ -84,8 +113,8 @@ nmap <leader>fu :se ff=unix<cr>
 "Blinking not allowed in nvc modes
 let &guicursor = substitute(&guicursor, 'n-v-c:', '&blinkon0-', '')
 
-"Set 7 lines to the curors - when moving vertical..
-set scrolloff=5
+"Set 3 lines to the curors - when moving vertical..
+set scrolloff=3
 
 "Turn on Wild menu
 set wildmenu
@@ -130,7 +159,7 @@ set t_vb=
 set mat=2
 
 " Create a red column at some position
-set colorcolumn=85
+set colorcolumn=88
 
 " Save when loosing focus
 au FocusLost * :wa
@@ -150,52 +179,19 @@ endfunction
 set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 "}}}
-"{{{ Visual
-
-" From an idea by Michael Naumann
-function! VisualSearch(direction) range
-  let l:saved_reg = @"
-  execute "normal! vgvy"
-  let l:pattern = escape(@", '\\/.*$^~[]')
-  let l:pattern = substitute(l:pattern, "\n$", "", "")
-  if a:direction == 'b'
-    execute "normal ?" . l:pattern . "^M"
-  else
-    execute "normal /" . l:pattern . "^M"
-  endif
-  let @/ = l:pattern
-  let @" = l:saved_reg
-endfunction
-
-"Basically you press * or # to search for the current selection !! Really useful
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-
-"}}}
 "{{{ Moving around and tabs
 
 " Disable some keys
 nnoremap <up> <nop>
-nnoremap <right> :bn<cr>
-nnoremap <left> :bp<cr>
-
 inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-" More useful than F1
-nnoremap <F1> <ESC>
-inoremap <F1> <ESC>
-
 " quicker exit
 inoremap jj <ESC>
 
-"Map space to / and c-space to ?
-map <space> /
-map <C-space> ?
-
-"Smart way to move btw. windows
+"Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -203,18 +199,14 @@ map <C-l> <C-W>l
 
 "Actually, the tab does not switch buffers, but my arrows
 "Bclose function can be found in "Buffer related" section
-map <leader>bd :Bclose<cr>
-map <down> :bd<cr>
+noremap <right> :bn<cr>
+noremap <left> :bp<cr>
+nnoremap <down> :bd<cr>
 
 "Tab configuration
 map <leader>tn :tabnew 
 map <leader>td :tabclose<cr>
 map <leader>te :tabedit
-try
-  set switchbuf=usetab
-  set stal=2
-catch
-endtry
 
 "}}}
 "{{{ General Autocommands
@@ -229,47 +221,11 @@ augroup BWCCreateDir
 augroup END
 
 "}}}
-"{{{ Parenthesis/bracket expanding
-
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-")
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $w <esc>`>a"<esc>`<i"<esc>
-vnoremap $e <esc>`>a``<esc>`<i''<esc>
-
-au BufNewFile,BufRead *.\(vim\)\@! inoremap " ""<esc>:let leavechar='"'<cr>i
-au BufNewFile,BufRead *.\(txt\)\@! inoremap ' ''<esc>:let leavechar="'"<cr>i
-
-imap <m-l> <esc>:exec "normal f" . leavechar<cr>a
-"}}}
 "{{{ General Abbrevs
 "
 "My information
 iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 iab xname Ignas Anikevičius
-"}}}
-"{{{ Editing mappings etc.
-
-"Remap VIM 0
-map 0 ^
-
-"Move a line of text using control
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-
-set completeopt=menu
 "}}}
 "{{{ Command-line config
 
@@ -342,11 +298,10 @@ endfunction
 "}}}
 "{{{ Files and backups
 "
-"Turn backup off
-set backupdir=./.backup,/tmp
-"set nobackup
-"set nowb
-set noswapfile
+"Turn backup and swap on
+set backupdir=~/.vim/tmp,/tmp
+set directory=~/.vim/swp
+set backupcopy=yes
 "}}}
 "{{{ Folding
 "
@@ -367,13 +322,13 @@ au FileType html,php,python,vim,javascript setl tabstop=2
 
 set smarttab
 set lbr
-set tw=500
+set tw=88
 
 "Paste toggle - when pasting something in, don't indent.
-set pastetoggle=<leader><F3>
+set pastetoggle=<S-F3>
 
 "Remove indenting on empty lines
-map <leader><F2> :%s/\s*$//g<cr>:noh<cr>''
+map <F2> :%s/\s*$//g<cr>:noh<cr>''
 
 "Smart C-style indent
 set smartindent
@@ -394,21 +349,32 @@ map <leader>sl :setlocal spell spelllang=lt<CR>
 map <leader>ss :setlocal spell<CR>
 map <leader>sn :setlocal nospell<CR>
 "}}}
+"{{{ Gzipped files
+augroup gzip
+  autocmd!
+  autocmd BufReadPre,FileReadPre *.gz set bin
+  autocmd BufReadPost,FileReadPost   *.gz '[,']!gunzip
+  autocmd BufReadPost,FileReadPost   *.gz set nobin
+  autocmd BufReadPost,FileReadPost   *.gz execute ":doautocmd BufReadPost " . expand("%:r")
+  autocmd BufWritePost,FileWritePost *.gz !mv <afile> <afile>:r
+  autocmd BufWritePost,FileWritePost *.gz !gzip <afile>:r
+  autocmd FileAppendPre      *.gz !gunzip <afile>
+  autocmd FileAppendPre      *.gz !mv <afile>:r <afile>
+  autocmd FileAppendPost     *.gz !mv <afile> <afile>:r
+  autocmd FileAppendPost     *.gz !gzip <afile>:r
+augroup END
+"}}}
 
 " Plugin configuration
 
-"{{{ Pathogen
-
-call pathogen#infect()
-"}}}
 "{{{ Gist
-
 let g:gist_clip_command = 'xclip -selection clipboard'
 let g:gist_detect_filetype = 1
 let g:gist_browser_command = 'luakit %URL%'
 "}}}
 "{{{ Yank Ring
 map <leader>y :YRShow<cr>
+let g:yankring_history_dir = '$HOME/.vim'
 "}}}
 "{{{ File explorer
 "
@@ -442,39 +408,42 @@ let g:bufExplorerSortBy = "name"
 autocmd BufRead,BufNew :call UMiniBufExplorer
 "}}}
 ""{{{ Automatic LaTeX Plugin
-"
-"au FileType tex set sw=4
-"au FileType tex set iskeyword+=:
-"
-"let g:tex_flavor='latex'
-"
-"au FileType tex map <leader>ll :TEX<cr>
-"au FileType tex map <leader>lb :Bibtex<cr>
-"au FileType tex map <leader>lv :View<cr>
-"au FileType tex map <leader>ls :SyncTex<cr>
-"
-"au FileType tex let b:atp_Viewer="zathura"
-"au FileType tex let b:atp_TexOptions = "--shell-escape,--synctex=1"
-"
-"au FileType tex let g:atp_diacritics=0
-"
-"au FileType tex let g:atp_Compiler = "lualatex"
-"au FileType tex let g:atp_folding = 1
-"au FileType tex let g:atp_fold_environments = 1
-"au FileType tex let g:atp_python = "/usr/bin/python2"
-""au FileType tex let g:LatexBox_latexmk_options="-pvc"
-"
-""}}}
-"{{{ Vim LaTeX suite
+
 au FileType tex set sw=4
 au FileType tex set iskeyword+=:
 
 let g:tex_flavor='latex'
 
-let g:Tex_MultipleCompileFormats='pdf'
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Tex_CompileRule_pdf='lualatex -interaction=nonstopmode $*'
+au FileType tex let b:atp_Viewer="zathura"
+au FileType tex let b:atp_TexCompiler = "lualatex"
+au FileType tex let b:atp_TexOptions = "--shell-escape,--synctex=1"
 
+au FileType tex let g:atp_Compiler = "bash"
+au FileType tex let g:atp_python = "/usr/bin/python2"
+"au FileType tex let g:LatexBox_latexmk_options="-pvc"
+
+""}}}
+"{{{ Vim LaTeX suite
+"au FileType tex set sw=4
+"au FileType tex set iskeyword+=:
+"
+"let g:tex_flavor='latex'
+"
+"let g:Tex_MultipleCompileFormats='pdf'
+"let g:Tex_DefaultTargetFormat='pdf'
+"let g:Tex_CompileRule_pdf='lualatex --shell-escape --synctex=1 --interaction=nonstopmode $*'
+""let g:Tex_CompileRule_pdf='pdflatex -interaction=nonstopmode $*'
+"let g:Tex_ViewRule_pdf='zathura -s'
+"
+"let g:Tex_Env_figure_graphicx = "\\begin{figure}[<+htpb+>]\<cr>\\centering\<cr>\\includegraphics[<+options+>]{<+file+>}\<cr>\\caption{<+caption text+>}\<cr>\\label{fig:<+label+>}\<cr>\\end{figure}<++>"
+"let g:Tex_Env_picture = "\\begin{tikzpicture}[<+options+>]\<cr><+commands+>\<cr>\\end{tikzpicture}<++>"
+"
+"let g:Tex_Leader = '#'
+"let g:Tex_Leader2 = '`'
+"
+""call s:Tex_EnvMacros('EEA', '&Math.', 'align')
+""call s:Tex_EnvMacros('*EEA',    '&Math.', 'align*')
+"
 "}}}
 
 " Filetype generic
@@ -523,8 +492,11 @@ au FileType mail set spell
 au FileType mail set spelllang=en_gb
 "}}}
 "{{{ LilyPond
-au FileType lilypond nmap <leader>ll :!lilypond %<cr>
-au FileType lilypond nmap <leader>lv :!mupdf %<.pdf<cr>
+au FileType lilypond nmap <leader>ll :!lilypond "%"<cr>
+au FileType lilypond nmap <leader>lv :!zathura "%<.pdf" &<cr>
+"}}}
+"{{{ Git
+au FileType gitcommit set tw=72
 "}}}
 
 "Snippets
